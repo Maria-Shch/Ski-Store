@@ -21,12 +21,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final LogoutSuccessHandler logoutSuccessHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService, LogoutSuccessHandler logoutSuccessHandler) {
+    public SecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
-        this.logoutSuccessHandler = logoutSuccessHandler;
     }
 
     @Override
@@ -53,8 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessHandler(logoutSuccessHandler);
+                .deleteCookies("JSESSIONID");
     }
 
     @Override

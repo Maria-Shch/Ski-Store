@@ -37,8 +37,9 @@ public class AuthController {
     }
 
     @GetMapping("/failureLogin")
-    public String getFailureLoginPage() {
-        return "auth/failureLogin";
+    public String getFailureLoginPage(Model model) {
+        model.addAttribute("hasError", true);
+        return "auth/login";
     }
 
     @GetMapping("/registration")

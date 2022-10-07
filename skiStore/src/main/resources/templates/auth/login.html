@@ -10,6 +10,8 @@
             <form class="container" method="post" th:action="@{/auth/login}">
                 <p class="header">Введите данные для входа в систему</p>
 
+                <p th:if="${hasError == true}" class="p-error">Неверный адрес почты или пароль</p>
+
                 <input class="input-field" type="email" id="username" name="username" placeholder="Электронная почта" required>
                 <input class="input-field" type="password" id="password" name="password" placeholder="Пароль" required>
 
