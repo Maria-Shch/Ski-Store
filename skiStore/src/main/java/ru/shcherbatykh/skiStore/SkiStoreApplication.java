@@ -44,5 +44,3 @@ public class SkiStoreApplication {
     }
 
 }
-
-//todo проверить почему не удаётся войти после неудачной попытки со страницы failure login
