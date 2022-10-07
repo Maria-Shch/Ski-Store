@@ -1,0 +1,21 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог</title>
+    <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
+    <link th:href="@{/css/catalog.css}" href="../src/main/resources/static/css/catalog.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+</head>
+    <body>
+        <div th:if="${role.name() == 'GUEST'}" id="guest_header" class="header"></div>
+        <div th:if="${role.name() == 'USER'}" id="user_header" class="header"></div>
+        <div th:if="${role.name() == 'ADMIN'}" id="admin_header" class="header"></div>
+        <div class="d-container">
+            <div th:each="modelType : ${modelTypes}" class="d-modeltype">
+                <a th:href="@{/catalog/{modelType}(modelType=${modelType.nameEn})}" th:text="${modelType.name}" class="p-modeltype-name"></a>
+            </div>
+        </div>
+        <script type="text/javascript" src="js/load_header.js"></script>
+    </body>
+</html>

@@ -1,0 +1,93 @@
+body{
+    margin: 0px;
+    font-family: "Arial Unicode MS";
+    background-color: rgba(255, 255, 255, 0.34);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: flex-end;
+}
+
+.header{
+    padding: 5px 15%;
+    width: 70%;
+    height: 10%;
+    background-color: #2C5E9E;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.d-logo-and-title{
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.img-logo{
+    height: 60px;
+}
+
+.container{
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.title{
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 30px;
+    color: #FFFFFF;
+}
+
+.input-login{
+    background: url('../images/login.png');
+    background-size: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+}
+
+.input-cart{
+    background: url('../images/shopping_cart.png');
+    background-size: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+}
+
+.input-account{
+    background: url('../images/account.png');
+    background-size: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+}
+
+.input-logout{
+    background: url('../images/logout.png');
+    background-size: 40px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border: none;
+}
+
+.form-login{
+    margin: 0px;
+}

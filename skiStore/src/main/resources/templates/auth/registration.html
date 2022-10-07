@@ -1,0 +1,46 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Create an account</title>
+        <link th:href="@{/css/auth.css}" href="../src/main/resources/static/css/auth.css" rel="stylesheet">
+    </head>
+    <body>
+        <div>
+            <form class="container" method="POST" th:action="@{/auth/registration}" th:object="${newUser}">
+                <p class="header">Регистрация</p>
+
+                <input class="input-field" type="text" th:field="*{name}" placeholder="Имя" required>
+
+                <input class="input-field" type="text" th:field="*{lastname}"  placeholder="Фамилия" required>
+
+                <p th:if="${#fields.hasErrors('username')}"  th:errors="*{username}" class="p-error"></p>
+
+                <input class="input-field" type="email"  th:field="*{username}" placeholder="Электронная почта" required>
+
+                <input class="input-field" type="tel"  th:field="*{phoneNumber}" placeholder="8-(_ _ _)" required>
+
+                <select class="input-field" name="idSelectedCity">
+                    <option th:each="city : ${cities}" th:value=${city.id} th:text="${city.name}"></option>
+                </select>
+
+                <p th:if="${#fields.hasErrors('confirmPassword')}"  th:errors="*{confirmPassword}" class="p-error"></p>
+
+                <input class="input-field" type="password"  th:field="*{password}" placeholder="Пароль" required>
+
+                <input class="input-field" type="password"  th:field="*{confirmPassword}" name="confirmPassword"  placeholder="Подтверждение пароля" required>
+
+                <button class="sign" type="submit">Создать аккаунт</button>
+
+                <div class="text-cont">
+                    <p class="p-text">
+                        Уже есть аккаунт?&nbsp
+                    </p>
+                    <a class="p-text" href="/auth/login">
+                         Войти
+                    </a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
