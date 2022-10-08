@@ -12,8 +12,8 @@ body{
 
 .header{
     padding: 5px 15%;
-    width: 70%;
-    height: 10%;
+    width: 80%;
+    height: 70px;
     background-color: #2C5E9E;
     display: flex;
     flex-direction: row;
@@ -36,7 +36,7 @@ body{
 }
 
 .container{
-    width: 40%;
+    width: 60%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -50,6 +50,7 @@ body{
     font-weight: bold;
     font-size: 30px;
     color: #FFFFFF;
+    margin: 0px 20px 0px 20px;
 }
 
 .input-login{
@@ -90,4 +91,14 @@ body{
 
 .form-login{
     margin: 0px;
+}
+
+.cart_acc_logout{
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
 }

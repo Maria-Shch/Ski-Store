@@ -1,0 +1,1 @@
+$("#cart_acc_logout").load("static_html/cart_acc_logout.html");
