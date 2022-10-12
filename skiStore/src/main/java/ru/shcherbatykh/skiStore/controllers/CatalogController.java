@@ -25,12 +25,10 @@ public class CatalogController {
     @GetMapping
     public String getCatalogPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
 
-        if(userDetails!=null){
+        if (userDetails!=null)
             model.addAttribute("role", userService.findByUsername(userDetails.getUsername()).getRole());
-        }
-        else{
+        else
             model.addAttribute("role", Role.GUEST);
-        }
 
         model.addAttribute("modelTypes", modelService.getModelTypes());
         return "catalog/catalog";
@@ -65,6 +63,4 @@ public class CatalogController {
         model.addAttribute("modelTypes", modelService.getModelTypes());
         return "catalog/catalog";
     }
-
-
 }

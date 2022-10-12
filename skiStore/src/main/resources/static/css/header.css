@@ -1,3 +1,11 @@
+:root {
+    --icon-background-size: 40px;
+    --icon-width: 40px;
+    --icon-height: 40px;
+    --icon-cursor: pointer;
+    --icon-border: none;
+}
+
 body{
     margin: 0px;
     font-family: "Arial Unicode MS";
@@ -46,7 +54,7 @@ body{
 }
 
 .title{
-    font-family: Arial;
+    font-family: Arial; 
     font-weight: bold;
     font-size: 30px;
     color: #FFFFFF;
@@ -54,39 +62,39 @@ body{
 }
 
 .input-login{
-    background: url('../images/login.png');
-    background-size: 40px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border: none;
+    background: url('../images/icons/login.png');
+    background-size: var(--icon-background-size);
+    width: var(--icon-width);
+    height: var(--icon-height);
+    cursor: var(--icon-cursor);
+    border: var(--icon-border);
 }
 
 .input-cart{
-    background: url('../images/shopping_cart.png');
-    background-size: 40px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border: none;
+    background: url('../images/icons/shopping_cart.png');
+    background-size: var(--icon-background-size);
+    width: var(--icon-width);
+    height: var(--icon-height);
+    cursor: var(--icon-cursor);
+    border: var(--icon-border);
 }
 
 .input-account{
-    background: url('../images/account.png');
-    background-size: 40px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border: none;
+    background: url('../images/icons/account.png');
+    background-size: var(--icon-background-size);
+    width: var(--icon-width);
+    height: var(--icon-height);
+    cursor: var(--icon-cursor);
+    border: var(--icon-border);
 }
 
 .input-logout{
-    background: url('../images/logout.png');
-    background-size: 40px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    border: none;
+    background: url('../images/icons/logout.png');
+    background-size: var(--icon-background-size);
+    width: var(--icon-width);
+    height: var(--icon-height);
+    cursor: var(--icon-cursor);
+    border: var(--icon-border);
 }
 
 .form-login{
