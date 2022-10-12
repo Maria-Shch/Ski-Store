@@ -1,0 +1,25 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<body>
+    <div th:fragment="fragment-header" class="header">
+        <div class="d-logo-and-title">
+            <img class="img-logo" src="../images/logo.png" alt="logo">
+            <h class="title">ЛЫЖНЫЙ ИНВЕНТАРЬ</h>
+        </div>
+        <div class="container">
+            <a class="title" href="/catalog">
+                КАТАЛОГ
+            </a>
+
+            <a th:if="${role.name() == 'ADMIN'}" class="title" href="/users">
+                ПОЛЬЗОВАТЕЛИ
+            </a>
+
+            <form th:if="${role.name() == 'GUEST'}" class="form-login" action="/auth/login" method="get">
+                <input class="input-login" type="submit" name="" value="">
+            </form>
+
+            <div th:replace="${role.name() != 'GUEST'} ? ~{fragments/cart_acc_logout :: fragment-cart-acc-logout} : ~{}"></div>
+        </div>
+    </div>
+</body>
