@@ -13,6 +13,8 @@ import ru.shcherbatykh.skiStore.services.ModelOfInventoryService;
 import ru.shcherbatykh.skiStore.services.ModelTypeService;
 import ru.shcherbatykh.skiStore.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -36,9 +38,14 @@ public class CatalogController {
         return "catalog/catalog";
     }
 
-    @GetMapping(value = "/ski_poles")
-    public String getSkiPolesPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        ModelType modelType = modelTypeService.getModelTypeByNameEn("ski_poles");
+    @GetMapping(value = {"/ski_poles", "/roller_skis", "/ski_boots", "/bindings", "/roller_ski_poles", "/ski"})
+    public String getCategoryPage(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString());
+        return "catalog/category";
+    }
+
+    private Model modelFilling(Model model, UserDetails userDetails, String modelTypeNameEnglish){
+        ModelType modelType = modelTypeService.getModelTypeByNameEn(modelTypeNameEnglish);
         List<ModelOfInventory> models = modelOfInventoryService.getModelByModelType(modelType);
 
         CategoryResponse categoryResponse = CategoryResponse.builder()
@@ -48,26 +55,6 @@ public class CatalogController {
 
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("categoryResponse", categoryResponse);
-        return "catalog/category";
-    }
-
-    @GetMapping("/roller_skis")
-    public String getRollerSkisPage(Model model) {
-        return "catalog/catalog";
-    }
-
-    @GetMapping("/ski_boots")
-    public String getSkiBootsPage( Model model) {
-        return "catalog/catalog";
-    }
-
-    @GetMapping("/bindings")
-    public String getBindingsPage( Model model) {
-        return "catalog/catalog";
-    }
-
-    @GetMapping("/roller_ski_poles")
-    public String getRollerSkiPolesPage( Model model) {
-        return "catalog/catalog";
+        return model;
     }
 }

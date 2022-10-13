@@ -24,15 +24,12 @@
                                  alt="logo">
                         </div>
                         <div class="d-description">
-
                             <a th:href="@{/{modelTypeNameEnglish}/{id}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish},
                                         id=${modelOfInventory.id})}"
                                th:text="${modelOfInventory.modelType.name} + ' ' +
                                         ${modelOfInventory.brand.name} + ' ' +
                                         ${modelOfInventory.title}"
                                class="a-header"/>
-
-
                             <p th:text="${modelOfInventory.description}" class="p-description">
                             <p th:text="'Бренд: ' + ${modelOfInventory.brand.name}" class="p-description">
                             <p th:text="'Год: ' + ${modelOfInventory.year.period}" class="p-description">
