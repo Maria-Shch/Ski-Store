@@ -35,9 +35,9 @@
                             <p th:text="'Год: ' + ${modelOfInventory.year.period}" class="p-description">
                         </div>
                         <div class="d-price">
-                            <p th:text="'Цена ' + ${modelOfInventory.price} + ' ₽'" class="p-price">
-                            <p th:text="'Скидка ' + ${modelOfInventory.discount} + '%'" class="p-price">
-                            <p th:text="${modelOfInventory.discountPrice} + ' ₽'" class="p-result-price">
+                            <p th:text="${modelOfInventory.priceForPrint} + ' ₽'" class="p-price">
+                            <p th:text="'-' + ${modelOfInventory.discount} + '%'" class="p-discount">
+                            <p th:text="${modelOfInventory.discountPriceForPrint} + ' ₽'" class="p-result-price">
                         </div>
                     </div>
                 </div>

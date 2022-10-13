@@ -114,16 +114,30 @@
 }
 
 .p-price{
-    font-size: 19px;
+    font-size: 22px;
     font-weight: bold;
     margin: 10px;
     text-align: center;
+    text-decoration: line-through;
+    text-decoration-color: #f55252;
+    text-decoration-thickness: 2px;
+}
+
+.p-discount{
+    font-size: 23px;
+    font-weight: bold;
+    margin: 10px;
+    text-align: center;
+    background-color: #acf894;
+    padding: 0px 5px;
+    border-radius: 5px;
 }
 
 .p-result-price{
-    font-size: 22px;
+    font-size: 25px;
     font-weight: bold;
-    background-color: #ffe34d;
-    padding: 5px;
+    background-color: #cbe9ff;
+    padding: 0px 5px;
+    border-radius: 5px;
     margin: 10px;
 }

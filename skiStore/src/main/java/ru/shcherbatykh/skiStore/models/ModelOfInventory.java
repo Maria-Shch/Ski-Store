@@ -3,7 +3,7 @@ package ru.shcherbatykh.skiStore.models;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ru.shcherbatykh.skiStore.utils.CommandUtils;
+import ru.shcherbatykh.skiStore.utils.CommonUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -50,6 +50,12 @@ public class ModelOfInventory {
     @Transient
     private Double discountPrice;
 
+    @Transient
+    private String priceForPrint;
+
+    @Transient
+    private String discountPriceForPrint;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "modelOfInventory")
     @ToString.Exclude
     private List<ModelAttributeValue> valuesOfModelAttribute = new ArrayList<>();
@@ -60,6 +66,8 @@ public class ModelOfInventory {
 
     @PostLoad
     public void init() {
-        discountPrice = CommandUtils.calculationPrice(price, discount);
+        discountPrice = CommonUtils.calculationPrice(price, discount);
+        priceForPrint = CommonUtils.decorationPrice(price);
+        discountPriceForPrint = CommonUtils.decorationPrice(discountPrice);
     }
 }
