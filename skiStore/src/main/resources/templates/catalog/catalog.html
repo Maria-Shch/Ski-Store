@@ -10,7 +10,7 @@
         <div th:replace="~{fragments/header :: fragment-header}"></div>
         <div class="d-container">
             <div th:each="modelType : ${modelTypes}" class="d-modeltype">
-                <a th:href="@{/catalog/{modelType}(modelType=${modelType.nameEn})}" th:text="${modelType.name}" class="p-modeltype-name"></a>
+                <a th:href="@{/catalog/{modelType}(modelType=${modelType.nameEnglish})}" th:text="${modelType.name}" class="p-modeltype-name"></a>
             </div>
         </div>
     </body>

@@ -1,9 +1,11 @@
 package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.shcherbatykh.skiStore.classes.Role;
 import ru.shcherbatykh.skiStore.models.City;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.UserRepository;
@@ -40,6 +42,19 @@ public class UserService {
     @Transactional
     public User findByUsername(String username){
         return userRepository.findByUsername(username).orElse(null);
+    }
+
+    @Transactional
+    public User getUserByUserDetails(UserDetails userDetails){
+        return findByUsername(userDetails.getUsername());
+    }
+
+    @Transactional
+    public Role getRoleByUserDetails(UserDetails userDetails){
+        if (userDetails!=null)
+            return getUserByUserDetails(userDetails).getRole();
+        else
+            return Role.GUEST;
     }
 
     @Transactional

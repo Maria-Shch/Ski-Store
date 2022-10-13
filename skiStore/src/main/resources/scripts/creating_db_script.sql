@@ -42,6 +42,8 @@ FOREIGN KEY (year_id) REFERENCES years (id),
 FOREIGN KEY (availability_status_id) REFERENCES availability_statuses (id)
 );
 
+ALTER TABLE models ADD image_title varchar(255);
+
 CREATE TABLE roles(
 id serial PRIMARY KEY,
 name varchar(255) NOT NULL

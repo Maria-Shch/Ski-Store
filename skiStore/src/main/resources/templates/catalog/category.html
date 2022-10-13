@@ -1,0 +1,52 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${categoryResponse.modelType.name}"></title>
+        <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
+        <link th:href="@{/css/category.css}" href="../src/main/resources/static/css/category.css" rel="stylesheet">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: fragment-header}"></div>
+        <div class="d-container">
+            <div class="d-title-category">
+                <p th:text="${categoryResponse.modelType.name}" class="p-title-category"></p>
+            </div>
+            <div class="d-filter-and-content">
+                <div class="d-filter">
+                    <p>Фильтр<p/>
+                </div>
+                <div class="d-content">
+                    <div th:each="modelOfInventory : ${categoryResponse.modelsOfInventory}" class="d-model">
+                        <div class="d-image">
+                            <img class="img-model"
+                                 th:src="@{../images/{modelTypeNameEnglish}/{imageTitle}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish},imageTitle=${modelOfInventory.imageTitle})}"
+                                 alt="logo">
+                        </div>
+                        <div class="d-description">
+
+                            <a th:href="@{/{modelTypeNameEnglish}/{id}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish},
+                                        id=${modelOfInventory.id})}"
+                               th:text="${modelOfInventory.modelType.name} + ' ' +
+                                        ${modelOfInventory.brand.name} + ' ' +
+                                        ${modelOfInventory.title}"
+                               class="a-header"/>
+
+
+                            <p th:text="${modelOfInventory.description}" class="p-description">
+                            <p th:text="'Бренд: ' + ${modelOfInventory.brand.name}" class="p-description">
+                            <p th:text="'Год: ' + ${modelOfInventory.year.period}" class="p-description">
+                        </div>
+                        <div class="d-price">
+                            <p th:text="'Цена ' + ${modelOfInventory.price} + ' ₽'" class="p-price">
+                            <p th:text="'Скидка ' + ${modelOfInventory.discount} + '%'" class="p-price">
+                            <p th:text="${modelOfInventory.discountPrice} + ' ₽'" class="p-result-price">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+

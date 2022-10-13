@@ -19,7 +19,7 @@ public class Inventory {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
-    private Model model;
+    private ModelOfInventory modelOfInventory;
 
     private int quantity;
 

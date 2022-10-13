@@ -1,0 +1,129 @@
+.d-container{
+    width: 85%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.d-title-category{
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.d-filter-and-content{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.d-filter{
+    width: 25%;
+    background-color: #F4F4F4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 20px 0px 0px;
+}
+
+.d-content{
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.d-model{
+    width: 100%;
+    background-color: #F4F4F4;;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 0px 0px 10px 0px;
+}
+
+.d-image{
+    width: 170px;
+    background-color: #FFFFFF;
+    height: 210px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-model{
+    max-width:95%;
+    max-height:95%;
+}
+
+.d-description{
+    width: 70%;
+    margin: 0px 10px 0px 10px;
+}
+
+.d-price{
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.p-title-category{
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 25px;
+    color: #1E3D6B;
+    margin: 0px 20px 20px 20px;
+}
+
+.a-header{
+    color: #2D4B66;
+    font-size: 18px;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap
+}
+
+.p-description{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -moz-box;
+    display: -webkit-box;
+    line-clamp: 3;
+    box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.p-price{
+    font-size: 19px;
+    font-weight: bold;
+    margin: 10px;
+    text-align: center;
+}
+
+.p-result-price{
+    font-size: 22px;
+    font-weight: bold;
+    background-color: #ffe34d;
+    padding: 5px;
+    margin: 10px;
+}

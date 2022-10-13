@@ -18,7 +18,7 @@ public class ModelAttributeValue {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
     @ToString.Exclude
-    private Model model;
+    private ModelOfInventory modelOfInventory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "static_attribute_id")

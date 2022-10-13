@@ -17,5 +17,5 @@ public class ModelType {
     private String name;
 
     @Column(name = "name_en")
-    private String nameEn;
+    private String nameEnglish;
 }

@@ -14,5 +14,5 @@ public class Season {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String period;
+    private String name;
 }
