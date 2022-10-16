@@ -1,7 +1,9 @@
 package ru.shcherbatykh.skiStore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.shcherbatykh.skiStore.classes.Filterable;
 
 import javax.persistence.*;
 
@@ -9,14 +11,21 @@ import javax.persistence.*;
 @Entity
 @Table(name = "values")
 @NoArgsConstructor
-public class Value {
+@AllArgsConstructor
+public class Value implements Filterable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String value;
+    @Column(name = "value")
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "static_attribute_id")
     private Attribute attribute;
+
+    @Override
+    public String getNameStr() {
+        return getName();
+    }
 }

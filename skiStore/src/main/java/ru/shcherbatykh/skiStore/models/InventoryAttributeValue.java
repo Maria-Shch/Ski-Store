@@ -1,7 +1,9 @@
 package ru.shcherbatykh.skiStore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.shcherbatykh.skiStore.classes.Filterable;
 
 import javax.persistence.*;
 
@@ -9,7 +11,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "inventory_attribute_values")
 @NoArgsConstructor
-public class InventoryAttributeValue {
+@AllArgsConstructor
+public class InventoryAttributeValue implements Filterable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -22,5 +25,11 @@ public class InventoryAttributeValue {
     @JoinColumn(name = "dynamic_attribute_id")
     private Attribute attribute;
 
-    private int value;
+    @Column(name = "value")
+    private int name;
+
+    @Override
+    public String getNameStr() {
+        return String.valueOf(getName());
+    }
 }

@@ -2,8 +2,11 @@ package ru.shcherbatykh.skiStore.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +26,12 @@ public class Attribute {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_of_measure_id")
     private UnitOfMeasure unitOfMeasure;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attribute")
+    @ToString.Exclude
+    private List<Value> values = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "attribute")
+    @ToString.Exclude
+    private List<InventoryAttributeValue> inventoryAttributeValues = new ArrayList<>();
 }

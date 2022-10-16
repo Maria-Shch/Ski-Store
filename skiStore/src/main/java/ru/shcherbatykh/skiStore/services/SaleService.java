@@ -24,6 +24,6 @@ public class SaleService {
 
     @Transactional
     public List<Sale> getSalesByTransaction(Transaction transaction) {
-        return saleRepository.getSaleByTransaction(transaction);
+        return saleRepository.findAllByTransaction(transaction);
     }
 }

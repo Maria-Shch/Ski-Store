@@ -19,7 +19,7 @@ public class CartService {
 
     @Transactional
     public List<Cart> getCartsByUser(User user) {
-        return cartRepository.getCartByUser(user);
+        return cartRepository.findAllByUser(user);
     }
 
     @Transactional

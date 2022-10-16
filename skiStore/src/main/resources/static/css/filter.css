@@ -1,0 +1,44 @@
+.d-filter-element{
+    display: flex;
+    flex-direction: column;
+}
+
+.d-filter-element-title{
+    display: flex;
+    flex-direction: row;
+}
+
+.d-filter-element-body{
+    display: flex;
+    flex-direction: row;
+}
+
+.d-filter-element-checkbox{
+    display: flex;
+    flex-direction: column;
+}
+
+.d-filter-element-body-block{
+    display: flex;
+    flex-direction: column;
+}
+
+.d-filter-element-body-block-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.d-filter-element-body-block-input{
+    display: flex;
+    flex-direction: column;
+}
+
+.i-price{
+
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

@@ -5,13 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.shcherbatykh.skiStore.classes.CategoryResponse;
+import ru.shcherbatykh.skiStore.classes.Filter;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
-import ru.shcherbatykh.skiStore.services.ModelOfInventoryService;
-import ru.shcherbatykh.skiStore.services.ModelTypeService;
-import ru.shcherbatykh.skiStore.services.UserService;
+import ru.shcherbatykh.skiStore.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
@@ -23,12 +24,17 @@ public class CatalogController {
 
     private final ModelOfInventoryService modelOfInventoryService;
     private final ModelTypeService modelTypeService;
+    private final SpecificationsService specificationsService;
     private final UserService userService;
+    private final FiltrationService filtrationService;
 
-    public CatalogController(ModelOfInventoryService modelOfInventoryService, ModelTypeService modelTypeService, UserService userService) {
+    public CatalogController(ModelOfInventoryService modelOfInventoryService, ModelTypeService modelTypeService,
+                             SpecificationsService specificationsService, UserService userService, FiltrationService filtrationService) {
         this.modelOfInventoryService = modelOfInventoryService;
         this.modelTypeService = modelTypeService;
+        this.specificationsService = specificationsService;
         this.userService = userService;
+        this.filtrationService = filtrationService;
     }
 
     @GetMapping
@@ -44,17 +50,30 @@ public class CatalogController {
         return "catalog/category";
     }
 
+    @PostMapping(value = {"/ski_poles", "/roller_skis", "/ski_boots", "/bindings", "/roller_ski_poles", "/ski"})
+    public String getCategoryPageAfterFilter(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails,
+                                             @ModelAttribute("filter") Filter filter) {
+
+        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString());
+        return "catalog/category";
+    }
+
     private Model modelFilling(Model model, UserDetails userDetails, String modelTypeNameEnglish){
         ModelType modelType = modelTypeService.getModelTypeByNameEn(modelTypeNameEnglish);
-        List<ModelOfInventory> models = modelOfInventoryService.getModelByModelType(modelType);
+        List<ModelOfInventory> models = modelOfInventoryService.getModelsByModelType(modelType);
 
         CategoryResponse categoryResponse = CategoryResponse.builder()
                 .modelType(modelType)
                 .modelsOfInventory(models)
                 .build();
 
+        Filter filter = Filter.builder()
+                .filtrationCategories(filtrationService.getFiltrationParams(modelType))
+                .build();
+
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("categoryResponse", categoryResponse);
+        model.addAttribute("filter", filter);
         return model;
     }
 }

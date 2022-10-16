@@ -25,6 +25,5 @@ public class ModelTypeService {
     public ModelType getModelTypeByNameEn(String nameEnglish) {
         return modelTypeRepository.findModelTypeByNameEnglish(nameEnglish).orElse(null);
     }
-
 }
 

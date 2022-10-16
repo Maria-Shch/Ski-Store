@@ -24,6 +24,6 @@ public class TransactionService {
 
     @Transactional
     public List<Transaction> getTransactionsByUser(User user) {
-        return transactionRepository.getTransactionsByUser(user);
+        return transactionRepository.findAllByUser(user);
     }
 }

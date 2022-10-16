@@ -1,7 +1,9 @@
 package ru.shcherbatykh.skiStore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.shcherbatykh.skiStore.classes.Filterable;
 
 import javax.persistence.*;
 
@@ -9,10 +11,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "years")
 @NoArgsConstructor
-public class Year {
+@AllArgsConstructor
+public class Year implements Filterable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String period;
+    @Column(name = "period")
+    private String name;
+
+    @Override
+    public String getNameStr() {
+        return getName();
+    }
 }

@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
 
-    List<Transaction> getTransactionsByUser(User user);
+    List<Transaction> findAllByUser(User user);
 }

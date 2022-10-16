@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 public class CategoryResponse {
-    ModelType modelType;
-    List<ModelOfInventory> modelsOfInventory;
+    private ModelType modelType;
+    private List<ModelOfInventory> modelsOfInventory;
+    private Filter filter;
 }

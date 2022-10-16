@@ -204,3 +204,12 @@ CREATE TABLE inventory_attribute_values(
     FOREIGN KEY (inventory_id) REFERENCES inventory (id),
     FOREIGN KEY (dynamic_attribute_id) REFERENCES attributes (id)
 );
+
+CREATE TABLE specifications(
+   id serial PRIMARY KEY,
+   model_type_id int,
+   attribute_id int,
+
+   FOREIGN KEY (model_type_id) REFERENCES model_types (id),
+   FOREIGN KEY (attribute_id) REFERENCES attributes (id)
+);

@@ -5,6 +5,7 @@
         <title th:text="${categoryResponse.modelType.name}"></title>
         <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
         <link th:href="@{/css/category.css}" href="../src/main/resources/static/css/category.css" rel="stylesheet">
+        <link th:href="@{/css/filter.css}" href="../src/main/resources/static/css/filter.css" rel="stylesheet">
     </head>
     <body>
         <div th:replace="~{fragments/header :: fragment-header}"></div>
@@ -14,7 +15,50 @@
             </div>
             <div class="d-filter-and-content">
                 <div class="d-filter">
-                    <p>Фильтр<p/>
+                    <form class="form-container" method="post" th:action="@{/catalog/{modelTypeNameEnglish}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish})}"
+                          th:object="${filter}">
+                        <div class="d-filter-element">
+                            <div class="d-filter-element-title">
+                                <p>Цена, ₽</p>
+                            </div>
+                            <div class="d-filter-element-body">
+                                <div class="d-filter-element-body-block">
+                                    <div class="d-filter-element-body-block-row">
+                                        <p>От</p>
+                                    </div>
+                                    <div class="d-filter-element-body-block-input">
+                                        <input th:field="*{startPrice}" class="i-price" type="number" value="2 500" name="startPrice">
+                                    </div>
+                                </div>
+                                <div class="d-filter-element-body-block">
+                                    <div class="d-filter-element-body-block-row">
+                                        <p>До</p>
+                                    </div>
+                                    <div class="d-filter-element-body-block-input">
+                                        <input th:field="*{finalPrice}" class="i-price" type="number" value="40 000" name="finalPrice">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:each="filtrationCategory, iterator : ${filter.filtrationCategories}" class="d-filter-element">
+                            <div class="d-filter-element-title">
+                                <p th:text="*{filtrationCategories[__${iterator.index}__].name}">
+                            </div>
+                            <div class="d-filter-element-checkbox">
+                                <div th:each="filtrationParameter, iterator1 : *{filtrationCategories[__${iterator.index}__].filtrationParameters}" class="div-checkbox-element">
+                                    <input type="hidden" th:field=*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].id} />
+                                    <input type="hidden" th:field=*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].name} />
+                                    <input type="checkbox" name="filtrationParameters" th:value="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].id}"
+                                           th:field="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].selected}"/>
+                                    <label th:text="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].name}"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="b-filter" type="submit">Применить</button>
+                    </form>
+                    <a th:href="@{/catalog/{modelTypeNameEnglish}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish})}">Сбросить</a>
                 </div>
                 <div class="d-content">
                     <div th:each="modelOfInventory : ${categoryResponse.modelsOfInventory}" class="d-model">
@@ -29,10 +73,10 @@
                                th:text="${modelOfInventory.modelType.name} + ' ' +
                                         ${modelOfInventory.brand.name} + ' ' +
                                         ${modelOfInventory.title}"
-                               class="a-header"/>
+                               class="a-header"></a>
                             <p th:text="${modelOfInventory.description}" class="p-description">
                             <p th:text="'Бренд: ' + ${modelOfInventory.brand.name}" class="p-description">
-                            <p th:text="'Год: ' + ${modelOfInventory.year.period}" class="p-description">
+                            <p th:text="'Год: ' + ${modelOfInventory.year.name}" class="p-description">
                         </div>
                         <div class="d-price">
                             <p th:text="${modelOfInventory.priceForPrint} + ' ₽'" class="p-price">

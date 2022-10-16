@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface CartRepository extends CrudRepository<Cart, Long> {
 
-    List<Cart> getCartByUser(User user);
+    List<Cart> findAllByUser(User user);
 }

@@ -14,5 +14,5 @@ public interface ModelOfInventoryRepository extends CrudRepository<ModelOfInvent
 
     ModelOfInventory getModelById(long id);
 
-    List<ModelOfInventory> getModelsByModelType(ModelType modelType);
+    List<ModelOfInventory> findAllByModelType(ModelType modelType);
 }

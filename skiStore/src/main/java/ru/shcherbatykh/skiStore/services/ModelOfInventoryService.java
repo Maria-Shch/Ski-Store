@@ -29,8 +29,8 @@ public class ModelOfInventoryService {
     }
 
     @Transactional
-    public List<ModelOfInventory> getModelByModelType(ModelType modelType) {
-        return modelOfInventoryRepository.getModelsByModelType(modelType);
+    public List<ModelOfInventory> getModelsByModelType(ModelType modelType) {
+        return modelOfInventoryRepository.findAllByModelType(modelType);
     }
 
     @Transactional
@@ -53,5 +53,4 @@ public class ModelOfInventoryService {
         modelOfInventory.setAvailabilityStatus(newAvailabilityStatus);
         modelOfInventoryRepository.save(modelOfInventory);
     }
-
 }

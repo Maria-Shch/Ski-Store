@@ -44,3 +44,5 @@ public class SkiStoreApplication {
     }
 
 }
+
+//todo sort model types before sending to front
