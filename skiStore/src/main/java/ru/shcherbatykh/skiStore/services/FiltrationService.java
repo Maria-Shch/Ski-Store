@@ -6,7 +6,8 @@ import ru.shcherbatykh.skiStore.classes.FiltrationCategory;
 import ru.shcherbatykh.skiStore.classes.FiltrationParameter;
 import ru.shcherbatykh.skiStore.models.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FiltrationService {
@@ -14,11 +15,13 @@ public class FiltrationService {
     private final SpecificationsService specificationsService;
     private final BrandService brandService;
     private final YearService yearService;
+    private final ValueService valueService;
 
-    public FiltrationService(SpecificationsService specificationsService, BrandService brandService, YearService yearService) {
+    public FiltrationService(SpecificationsService specificationsService, BrandService brandService, YearService yearService, ValueService valueService) {
         this.specificationsService = specificationsService;
         this.brandService = brandService;
         this.yearService = yearService;
+        this.valueService = valueService;
     }
 
     public List<FiltrationCategory> getFiltrationParams(ModelType modelType) {
@@ -32,8 +35,7 @@ public class FiltrationService {
         for (Attribute attribute : attributes) {
             FiltrationCategory fc = new FiltrationCategory();
             fc.setName(attribute.getName());
-            //todo брать не просто все существующе values у атрибута, а только те, которые реально существуют
-            List<Value> values = attribute.getValues();
+            List<Value> values = valueService.getPresentValuesByAttribute(attribute);
             fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(values));
             filtrationCategories.add(fc);
         }

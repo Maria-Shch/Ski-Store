@@ -3,7 +3,6 @@ package ru.shcherbatykh.skiStore.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.shcherbatykh.skiStore.classes.Filterable;
 
 import javax.persistence.*;
 
