@@ -6,7 +6,8 @@ import ru.shcherbatykh.skiStore.classes.FiltrationCategory;
 import ru.shcherbatykh.skiStore.classes.FiltrationParameter;
 import ru.shcherbatykh.skiStore.models.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FiltrationService {
@@ -14,11 +15,13 @@ public class FiltrationService {
     private final SpecificationsService specificationsService;
     private final BrandService brandService;
     private final YearService yearService;
+    private final ValueService valueService;
 
-    public FiltrationService(SpecificationsService specificationsService, BrandService brandService, YearService yearService) {
+    public FiltrationService(SpecificationsService specificationsService, BrandService brandService, YearService yearService, ValueService valueService) {
         this.specificationsService = specificationsService;
         this.brandService = brandService;
         this.yearService = yearService;
+        this.valueService = valueService;
     }
 
     public List<FiltrationCategory> getFiltrationParams(ModelType modelType) {
@@ -32,18 +35,8 @@ public class FiltrationService {
         for (Attribute attribute : attributes) {
             FiltrationCategory fc = new FiltrationCategory();
             fc.setName(attribute.getName());
-
-            List<Value> values = attribute.getValues();
-
-            if(values.size()!=0){
-                fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(values));
-            }
-            else{
-                List<InventoryAttributeValue> inventoryAttributeValues = attribute.getInventoryAttributeValues();
-                Set<InventoryAttributeValue> inventoryAttributeValueSet = new TreeSet<>(Comparator.comparing(InventoryAttributeValue::getName));
-                inventoryAttributeValueSet.addAll(inventoryAttributeValues);
-                fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(inventoryAttributeValueSet.stream().toList()));
-            }
+            List<Value> values = valueService.getPresentValuesByAttribute(attribute);
+            fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(values));
             filtrationCategories.add(fc);
         }
 
@@ -59,7 +52,7 @@ public class FiltrationService {
     private List<FiltrationParameter> serializationFiterableToFiltrationParameter(List<? extends Filterable> params){
         List<FiltrationParameter> filtrationParameters = new ArrayList<>();
         for (Filterable param : params) {
-            filtrationParameters.add(new FiltrationParameter(param.getId(), param.getNameStr(), false));
+            filtrationParameters.add(new FiltrationParameter(param.getId(), param.getName(), false));
         }
         return filtrationParameters;
     }

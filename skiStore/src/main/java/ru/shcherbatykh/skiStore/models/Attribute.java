@@ -27,6 +27,9 @@ public class Attribute {
     @JoinColumn(name = "unit_of_measure_id")
     private UnitOfMeasure unitOfMeasure;
 
+    @Column(name = "is_dynamic")
+    private boolean isDynamic;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attribute")
     @ToString.Exclude
     private List<Value> values = new ArrayList<>();
