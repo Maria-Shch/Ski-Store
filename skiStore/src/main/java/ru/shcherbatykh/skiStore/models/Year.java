@@ -19,9 +19,4 @@ public class Year implements Filterable {
 
     @Column(name = "period")
     private String name;
-
-    @Override
-    public String getNameStr() {
-        return getName();
-    }
 }

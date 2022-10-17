@@ -21,11 +21,6 @@ public class Value implements Filterable {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "static_attribute_id")
+    @JoinColumn(name = "attribute_id")
     private Attribute attribute;
-
-    @Override
-    public String getNameStr() {
-        return getName();
-    }
 }

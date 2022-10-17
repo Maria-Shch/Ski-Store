@@ -170,7 +170,7 @@ CREATE TABLE model_attribute_values(
 
 ALTER TABLE values ADD attribute_of_model_id INT;
 ALTER TABLE values
-    ADD CONSTRAINT fk_values_attributes FOREIGN KEY (static_attribute_id) REFERENCES attributes (id);
+    ADD CONSTRAINT fk_values_attributes FOREIGN KEY (attribute_id) REFERENCES attributes (id);
 
 CREATE TABLE model_attribute_values(
     id serial PRIMARY KEY,
@@ -204,6 +204,10 @@ CREATE TABLE inventory_attribute_values(
     FOREIGN KEY (inventory_id) REFERENCES inventory (id),
     FOREIGN KEY (dynamic_attribute_id) REFERENCES attributes (id)
 );
+
+ALTER TABLE inventory_attribute_values ADD value_id INT;
+ALTER TABLE inventory_attribute_values
+    ADD CONSTRAINT fk_inventory_attribute_values_values FOREIGN KEY (value_id) REFERENCES values (id);
 
 CREATE TABLE specifications(
    id serial PRIMARY KEY,

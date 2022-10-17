@@ -18,9 +18,4 @@ public class Brand implements Filterable {
     private long id;
 
     private String name;
-
-    @Override
-    public String getNameStr() {
-        return getName();
-    }
 }

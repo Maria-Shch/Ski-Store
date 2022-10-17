@@ -54,7 +54,7 @@ public class CatalogController {
     public String getCategoryPageAfterFilter(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails,
                                              @ModelAttribute("filter") Filter filter) {
 
-        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString());
+//        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString());
         return "catalog/category";
     }
 

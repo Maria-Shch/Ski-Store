@@ -32,18 +32,9 @@ public class FiltrationService {
         for (Attribute attribute : attributes) {
             FiltrationCategory fc = new FiltrationCategory();
             fc.setName(attribute.getName());
-
+            //todo брать не просто все существующе values у атрибута, а только те, которые реально существуют
             List<Value> values = attribute.getValues();
-
-            if(values.size()!=0){
-                fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(values));
-            }
-            else{
-                List<InventoryAttributeValue> inventoryAttributeValues = attribute.getInventoryAttributeValues();
-                Set<InventoryAttributeValue> inventoryAttributeValueSet = new TreeSet<>(Comparator.comparing(InventoryAttributeValue::getName));
-                inventoryAttributeValueSet.addAll(inventoryAttributeValues);
-                fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(inventoryAttributeValueSet.stream().toList()));
-            }
+            fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(values));
             filtrationCategories.add(fc);
         }
 
@@ -59,7 +50,7 @@ public class FiltrationService {
     private List<FiltrationParameter> serializationFiterableToFiltrationParameter(List<? extends Filterable> params){
         List<FiltrationParameter> filtrationParameters = new ArrayList<>();
         for (Filterable param : params) {
-            filtrationParameters.add(new FiltrationParameter(param.getId(), param.getNameStr(), false));
+            filtrationParameters.add(new FiltrationParameter(param.getId(), param.getName(), false));
         }
         return filtrationParameters;
     }

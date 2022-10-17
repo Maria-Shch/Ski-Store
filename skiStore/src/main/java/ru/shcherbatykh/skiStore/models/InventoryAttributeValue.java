@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name = "inventory_attribute_values")
 @NoArgsConstructor
 @AllArgsConstructor
-public class InventoryAttributeValue implements Filterable {
+public class InventoryAttributeValue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -25,11 +25,7 @@ public class InventoryAttributeValue implements Filterable {
     @JoinColumn(name = "dynamic_attribute_id")
     private Attribute attribute;
 
-    @Column(name = "value")
-    private int name;
-
-    @Override
-    public String getNameStr() {
-        return String.valueOf(getName());
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "value_id")
+    private Value value;
 }
