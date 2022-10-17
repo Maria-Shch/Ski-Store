@@ -41,14 +41,15 @@
                             </div>
                         </div>
 
-                        <div th:each="filtrationCategory, iterator : ${filter.filtrationCategories}" class="d-filter-element">
+                        <div th:each="filtrationCategory, iterator : *{filtrationCategories}" class="d-filter-element">
                             <div class="d-filter-element-title">
-                                <p th:text="*{filtrationCategories[__${iterator.index}__].name}">
+                                <p th:text="*{filtrationCategories[__${iterator.index}__].name}"></p>
+                                <input type="hidden" th:field="*{filtrationCategories[__${iterator.index}__].name}" />
                             </div>
                             <div class="d-filter-element-checkbox">
                                 <div th:each="filtrationParameter, iterator1 : *{filtrationCategories[__${iterator.index}__].filtrationParameters}" class="div-checkbox-element">
-                                    <input type="hidden" th:field=*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].id} />
-                                    <input type="hidden" th:field=*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].name} />
+                                    <input type="hidden" th:field="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].id}" />
+                                    <input type="hidden" th:field="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].name}" />
                                     <input type="checkbox" name="filtrationParameters" th:value="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].id}"
                                            th:field="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].selected}"/>
                                     <label th:text="*{filtrationCategories[__${iterator.index}__].filtrationParameters[__${iterator1.index}__].name}"></label>
