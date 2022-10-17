@@ -6,8 +6,7 @@ import ru.shcherbatykh.skiStore.classes.FiltrationCategory;
 import ru.shcherbatykh.skiStore.classes.FiltrationParameter;
 import ru.shcherbatykh.skiStore.models.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FiltrationService {
@@ -35,13 +34,15 @@ public class FiltrationService {
             fc.setName(attribute.getName());
 
             List<Value> values = attribute.getValues();
-            List<InventoryAttributeValue> inventoryAttributeValues = attribute.getInventoryAttributeValues();
 
             if(values.size()!=0){
                 fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(values));
             }
             else{
-                fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(inventoryAttributeValues));
+                List<InventoryAttributeValue> inventoryAttributeValues = attribute.getInventoryAttributeValues();
+                Set<InventoryAttributeValue> inventoryAttributeValueSet = new TreeSet<>(Comparator.comparing(InventoryAttributeValue::getName));
+                inventoryAttributeValueSet.addAll(inventoryAttributeValues);
+                fc.setFiltrationParameters(serializationFiterableToFiltrationParameter(inventoryAttributeValueSet.stream().toList()));
             }
             filtrationCategories.add(fc);
         }
