@@ -213,3 +213,12 @@ CREATE TABLE specifications(
    FOREIGN KEY (model_type_id) REFERENCES model_types (id),
    FOREIGN KEY (attribute_id) REFERENCES attributes (id)
 );
+
+CREATE TABLE duplicate_table_inventory_attribute_values
+    AS TABLE inventory_attribute_values;
+
+ALTER TABLE duplicate_table_inventory_attribute_values
+    ADD CONSTRAINT fk_duplicate_table_inventory_attribute_values_attributes FOREIGN KEY (dynamic_attribute_id) REFERENCES attributes (id);
+
+ALTER TABLE duplicate_table_inventory_attribute_values
+    ADD CONSTRAINT fk_duplicate_table_inventory_attribute_values_inventory FOREIGN KEY (inventory_id) REFERENCES inventory (id);
