@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "duplicate_table_inventory_attribute_values")
+@Table(name = "inventory_attribute_values")
 @NoArgsConstructor
 @AllArgsConstructor
 public class InventoryAttributeValue {
