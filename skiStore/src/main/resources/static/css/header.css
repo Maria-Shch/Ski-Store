@@ -4,6 +4,7 @@
     --icon-height: 40px;
     --icon-cursor: pointer;
     --icon-border: none;
+    --border-radius: 15px;
 }
 
 body{

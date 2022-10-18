@@ -15,11 +15,12 @@
             </div>
             <div class="d-filter-and-content">
                 <div class="d-filter">
+                    <p class="p-filter">Фильтр</p>
                     <form class="form-container" method="post" th:action="@{/catalog/{modelTypeNameEnglish}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish})}"
                           th:object="${filter}">
                         <div class="d-filter-element">
                             <div class="d-filter-element-title">
-                                <p>Цена, ₽</p>
+                                <p class="p-filter-category-name">Цена, ₽</p>
                             </div>
                             <div class="d-filter-element-body">
                                 <div class="d-filter-element-body-block">
@@ -27,7 +28,7 @@
                                         <p>От</p>
                                     </div>
                                     <div class="d-filter-element-body-block-input">
-                                        <input th:field="*{startPrice}" class="i-price" type="number" value="2 500" name="startPrice">
+                                        <input th:field="*{startPrice}" class="i-price" type="number" name="startPrice">
                                     </div>
                                 </div>
                                 <div class="d-filter-element-body-block">
@@ -35,7 +36,7 @@
                                         <p>До</p>
                                     </div>
                                     <div class="d-filter-element-body-block-input">
-                                        <input th:field="*{finalPrice}" class="i-price" type="number" value="40 000" name="finalPrice">
+                                        <input th:field="*{finalPrice}" class="i-price" type="number" name="finalPrice">
                                     </div>
                                 </div>
                             </div>
@@ -43,7 +44,7 @@
 
                         <div th:each="filtrationCategory, iterator : *{filtrationCategories}" class="d-filter-element">
                             <div class="d-filter-element-title">
-                                <p th:text="*{filtrationCategories[__${iterator.index}__].name}"></p>
+                                <p th:text="*{filtrationCategories[__${iterator.index}__].name}" class="p-filter-category-name"></p>
                                 <input type="hidden" th:field="*{filtrationCategories[__${iterator.index}__].name}" />
                             </div>
                             <div class="d-filter-element-checkbox">
@@ -56,10 +57,11 @@
                                 </div>
                             </div>
                         </div>
-
                         <button class="b-filter" type="submit">Применить</button>
                     </form>
-                    <a th:href="@{/catalog/{modelTypeNameEnglish}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish})}">Сбросить</a>
+                    <a th:href="@{/catalog/{modelTypeNameEnglish}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish})}" class="a-reset">
+                        Сбросить
+                    </a>
                 </div>
                 <div class="d-content">
                     <div th:each="modelOfInventory : ${categoryResponse.modelsOfInventory}" class="d-model">

@@ -1,11 +1,38 @@
+.d-filter{
+    width: 20%;
+    background-color: #F4F4F4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 20px 0 0;
+    padding: 15px;
+    border-radius: var(--border-radius);
+}
+
+.form-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 10px 0;
+}
+
 .d-filter-element{
     display: flex;
     flex-direction: column;
+    width: 95%;
+    margin: 10px 0 10px 0;
+    background-color: #FFFFFF;
+    padding: 10px;
+    border-radius: var(--border-radius);
 }
 
 .d-filter-element-title{
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 .d-filter-element-body{
@@ -21,6 +48,7 @@
 .d-filter-element-body-block{
     display: flex;
     flex-direction: column;
+    margin-right: 5px;
 }
 
 .d-filter-element-body-block-row{
@@ -31,14 +59,82 @@
 .d-filter-element-body-block-input{
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .i-price{
-
+    width: 100%;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.p-filter{
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 20px;
+    color: #1E3D6B;
+    margin: 10px 0 10px 0;
+}
+
+.p-filter-category-name{
+    margin: 0 0 10px 0;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 17px;
+    color: #313f54;
+}
+
+.b-filter{
+    background-color: #5995DD;
+    width: 135px;
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 17px;
+    font-weight: bold;
+    height: 29px;
+    list-style: none;
+    outline: none;
+    padding: 3px 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.a-reset{
+    background-color: #ffffff;
+    width: 135px;
+    border-radius: var(--border-radius);
+    border-style: none;
+    box-sizing: border-box;
+    color: #2C5E9E;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 17px;
+    font-weight: bold;
+    height: 29px;
+    list-style: none;
+    outline: none;
+    padding: 3px 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
 }
