@@ -40,10 +40,6 @@ body{
     align-content: center;
 }
 
-.img-logo{
-    height: 60px;
-}
-
 .container{
     width: 60%;
     display: flex;
@@ -60,6 +56,15 @@ body{
     font-size: 30px;
     color: #FFFFFF;
     margin: 0px 20px 0px 20px;
+}
+
+.input-logo{
+    background: url('../images/icons/logo.png') no-repeat;
+    background-size: 60px;
+    width: 60px;
+    height: 60px;
+    cursor: var(--icon-cursor);
+    border: var(--icon-border);
 }
 
 .input-login{
