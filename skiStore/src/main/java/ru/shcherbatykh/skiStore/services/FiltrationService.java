@@ -1,6 +1,7 @@
 package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.stereotype.Service;
+import ru.shcherbatykh.skiStore.classes.Filter;
 import ru.shcherbatykh.skiStore.classes.Filterable;
 import ru.shcherbatykh.skiStore.classes.FiltrationCategory;
 import ru.shcherbatykh.skiStore.classes.FiltrationParameter;
@@ -47,6 +48,21 @@ public class FiltrationService {
         filtrationCategories.add(new FiltrationCategory("Год", serializationFiterableToFiltrationParameter(years)));
 
         return filtrationCategories;
+    }
+
+    public List<FiltrationCategory> getSelectedFiltrationParams(Filter filter){
+        List<FiltrationCategory> selectedFC = new ArrayList<>();
+
+        for (FiltrationCategory fc : filter.getFiltrationCategories()){
+            List<FiltrationParameter> filtrationParameters = fc.getFiltrationParameters().stream()
+                    .parallel()
+                    .filter(p -> p.getSelected() == true)
+                    .toList();
+            if(!filtrationParameters.isEmpty()){
+                selectedFC.add(new FiltrationCategory(fc.getName(), filtrationParameters));
+            }
+        }
+        return selectedFC;
     }
 
     private List<FiltrationParameter> serializationFiterableToFiltrationParameter(List<? extends Filterable> params){

@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.shcherbatykh.skiStore.classes.CategoryResponse;
 import ru.shcherbatykh.skiStore.classes.Filter;
+import ru.shcherbatykh.skiStore.classes.FiltrationCategory;
+import ru.shcherbatykh.skiStore.classes.FiltrationParameter;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
 import ru.shcherbatykh.skiStore.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -54,7 +57,7 @@ public class CatalogController {
     public String getCategoryPageAfterFilter(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails,
                                              @ModelAttribute("filter") Filter filter) {
 
-        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString());
+        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString(), filter);
         return "catalog/category";
     }
 
@@ -73,6 +76,12 @@ public class CatalogController {
 
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("categoryResponse", categoryResponse);
+        model.addAttribute("filter", filter);
+        return model;
+    }
+
+    private Model modelFilling(Model model, UserDetails userDetails, String modelTypeNameEnglish, Filter filter){
+        modelFilling(model, userDetails, modelTypeNameEnglish);
         model.addAttribute("filter", filter);
         return model;
     }
