@@ -1,0 +1,65 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title th:text="${modelOfInventory.title}"></title>
+        <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
+        <link th:href="@{/css/model.css}" href="../src/main/resources/static/css/model.css" rel="stylesheet">
+        <link th:href="@{/css/price.css}" href="../src/main/resources/static/css/price.css" rel="stylesheet">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: fragment-header}"></div>
+        <div class="d-content">
+            <div class="d-title">
+                <p th:text="${modelOfInventory.modelType.name} + ' ' +
+                            ${modelOfInventory.brand.name} + ' ' +
+                            ${modelOfInventory.title}"
+                class="p-title"></p>
+            </div>
+            <div class="d-image-params-price">
+                <div class="d-image">
+                    <img class="img-model"
+                         th:src="@{../../images/{modelTypeNameEnglish}/{imageTitle}
+                         (modelTypeNameEnglish=${modelOfInventory.modelType.nameEnglish},
+                          imageTitle=${modelOfInventory.imageTitle})}"
+                         alt="logo">
+                </div>
+                <div class="d-params-price">
+                    <div class="d-params">
+                        <div class="d-param">
+                            <p class="p-parameter"> Бренд: </p>
+                            <p th:text="${modelOfInventory.brand.name}" class="p-parameter"></p>
+                        </div>
+                        <hr class="hr">
+                        <div class="d-param">
+                            <p class="p-parameter"> Год: </p>
+                            <p th:text="${modelOfInventory.year.name}" class="p-parameter"></p>
+                        </div>
+                        <hr class="hr">
+                        <div th:each="modelAttributeValue : ${modelOfInventory.valuesOfModelAttribute}" class="d-param-hr">
+                            <div class="d-param">
+                                <p th:text="${modelAttributeValue.attribute.name} + ': '" class="p-parameter"></p>
+                                <p th:if="${modelAttributeValue.attribute.attributeType.name == 'List'}"
+                                   th:text="${modelAttributeValue.value.name}" class="p-parameter"></p>
+                                <p th:if="${modelAttributeValue.attribute.attributeType.name == 'Number'}"
+                                   th:text="${modelAttributeValue.simpleValue} + ' ' + ${modelAttributeValue.attribute.unitOfMeasure.name}"
+                                   class="p-parameter"></p>
+                            </div>
+                            <hr class="hr">
+                        </div>
+                    </div>
+                    <div th:replace="~{fragments/price :: fragment-price}"></div>
+                </div>
+            </div>
+            <div class="d-description-title">
+                <p class="p-description-title"> Описание </p>
+            </div>
+            <hr class="hr-description">
+            <div class="d-description">
+                <p th:text="${modelOfInventory.description}" class="p-description">
+            </div>
+        </div>
+    </body>
+</html>
+
+

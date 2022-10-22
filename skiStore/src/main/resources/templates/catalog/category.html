@@ -72,7 +72,7 @@
                                  alt="logo">
                         </div>
                         <div class="d-description">
-                            <a th:href="@{/{modelTypeNameEnglish}/{id}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish},
+                            <a th:href="@{/catalog/{modelTypeNameEnglish}/{id}(modelTypeNameEnglish=${categoryResponse.modelType.nameEnglish},
                                         id=${modelOfInventory.id})}"
                                th:text="${modelOfInventory.modelType.name} + ' ' +
                                         ${modelOfInventory.brand.name} + ' ' +

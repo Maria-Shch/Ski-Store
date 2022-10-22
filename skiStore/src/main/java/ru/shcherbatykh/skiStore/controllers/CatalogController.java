@@ -4,21 +4,16 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.skiStore.classes.CategoryResponse;
 import ru.shcherbatykh.skiStore.classes.Filter;
-import ru.shcherbatykh.skiStore.classes.FiltrationCategory;
-import ru.shcherbatykh.skiStore.classes.FiltrationParameter;
+import ru.shcherbatykh.skiStore.models.ModelAttributeValue;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
 import ru.shcherbatykh.skiStore.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -84,5 +79,14 @@ public class CatalogController {
         modelFilling(model, userDetails, modelTypeNameEnglish);
         model.addAttribute("filter", filter);
         return model;
+    }
+
+    @GetMapping(value = {"/ski_poles/{id}", "/roller_skis/{id}", "/ski_boots/{id}", "/bindings/{id}", "/roller_ski_poles/{id}", "/ski/{id}"})
+    public String getModelPage(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id) {
+        ModelOfInventory model1 = modelOfInventoryService.getModel(id);
+        List<ModelAttributeValue> modelAttributeValues = model1.getValuesOfModelAttribute();
+        model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+        model.addAttribute("modelOfInventory", modelOfInventoryService.getModel(id));
+        return "catalog/model";
     }
 }
