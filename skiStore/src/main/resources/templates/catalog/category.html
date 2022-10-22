@@ -6,6 +6,7 @@
         <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
         <link th:href="@{/css/category.css}" href="../src/main/resources/static/css/category.css" rel="stylesheet">
         <link th:href="@{/css/filter.css}" href="../src/main/resources/static/css/filter.css" rel="stylesheet">
+        <link th:href="@{/css/price.css}" href="../src/main/resources/static/css/price.css" rel="stylesheet">
     </head>
     <body>
         <div th:replace="~{fragments/header :: fragment-header}"></div>
@@ -81,11 +82,7 @@
                             <p th:text="'Бренд: ' + ${modelOfInventory.brand.name}" class="p-description">
                             <p th:text="'Год: ' + ${modelOfInventory.year.name}" class="p-description">
                         </div>
-                        <div class="d-price">
-                            <p th:text="${modelOfInventory.priceForPrint} + ' ₽'" class="p-price">
-                            <p th:text="'-' + ${modelOfInventory.discount} + '%'" class="p-discount">
-                            <p th:text="${modelOfInventory.discountPriceForPrint} + ' ₽'" class="p-result-price">
-                        </div>
+                        <div th:replace="~{fragments/price :: fragment-price}"></div>
                     </div>
                 </div>
             </div>

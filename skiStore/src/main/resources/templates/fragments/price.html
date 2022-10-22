@@ -1,0 +1,7 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<div th:fragment="fragment-price" class="d-price">
+    <p th:text="${modelOfInventory.priceForPrint} + ' ₽'" class="p-price">
+    <p th:text="'-' + ${modelOfInventory.discount} + '%'" class="p-discount">
+    <p th:text="${modelOfInventory.discountPriceForPrint} + ' ₽'" class="p-result-price">
+</div>
