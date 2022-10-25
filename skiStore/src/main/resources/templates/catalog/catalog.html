@@ -7,7 +7,7 @@
         <link th:href="@{/css/catalog.css}" href="../src/main/resources/static/css/catalog.css" rel="stylesheet">
     </head>
     <body>
-        <div th:replace="~{fragments/header :: fragment-header}"></div>
+        <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
         <div class="d-container">
             <div th:each="modelType : ${modelTypes}" class="d-modeltype">
                 <a th:href="@{/catalog/{modelType}(modelType=${modelType.nameEnglish})}" th:text="${modelType.name}" class="p-modeltype-name"></a>

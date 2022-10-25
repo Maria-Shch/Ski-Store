@@ -9,7 +9,7 @@
         <link th:href="@{/css/price.css}" href="../src/main/resources/static/css/price.css" rel="stylesheet">
     </head>
     <body>
-        <div th:replace="~{fragments/header :: fragment-header}"></div>
+        <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
         <div class="d-container">
             <div class="d-title-category">
                 <p th:text="${categoryResponse.modelType.name}" class="p-title-category"></p>
@@ -82,7 +82,7 @@
                             <p th:text="'Бренд: ' + ${modelOfInventory.brand.name}" class="p-description">
                             <p th:text="'Год: ' + ${modelOfInventory.year.name}" class="p-description">
                         </div>
-                        <div th:replace="~{fragments/price :: fragment-price}"></div>
+                        <div th:replace="~{fragments/price :: fragment-price (${modelOfInventory})}"></div>
                     </div>
                 </div>
             </div>

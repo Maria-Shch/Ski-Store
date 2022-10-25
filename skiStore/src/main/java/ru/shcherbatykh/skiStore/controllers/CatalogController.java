@@ -6,8 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.skiStore.classes.CategoryResponse;
+import ru.shcherbatykh.skiStore.classes.DynamicInventoryAttribute;
 import ru.shcherbatykh.skiStore.classes.Filter;
-import ru.shcherbatykh.skiStore.models.ModelAttributeValue;
+import ru.shcherbatykh.skiStore.classes.ModelOfInventoryResponse;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
 import ru.shcherbatykh.skiStore.services.*;
@@ -25,14 +26,16 @@ public class CatalogController {
     private final SpecificationsService specificationsService;
     private final UserService userService;
     private final FiltrationService filtrationService;
+    private final InventoryService inventoryService;
 
     public CatalogController(ModelOfInventoryService modelOfInventoryService, ModelTypeService modelTypeService,
-                             SpecificationsService specificationsService, UserService userService, FiltrationService filtrationService) {
+                             SpecificationsService specificationsService, UserService userService, FiltrationService filtrationService, InventoryService inventoryService) {
         this.modelOfInventoryService = modelOfInventoryService;
         this.modelTypeService = modelTypeService;
         this.specificationsService = specificationsService;
         this.userService = userService;
         this.filtrationService = filtrationService;
+        this.inventoryService = inventoryService;
     }
 
     @GetMapping
@@ -82,11 +85,20 @@ public class CatalogController {
     }
 
     @GetMapping(value = {"/ski_poles/{id}", "/roller_skis/{id}", "/ski_boots/{id}", "/bindings/{id}", "/roller_ski_poles/{id}", "/ski/{id}"})
-    public String getModelPage(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id) {
+    public String getModelPage( Model model, @AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id) {
+
         ModelOfInventory model1 = modelOfInventoryService.getModel(id);
-        List<ModelAttributeValue> modelAttributeValues = model1.getValuesOfModelAttribute();
+        DynamicInventoryAttribute dynamicInventoryAttributeByModel = inventoryService.getDynamicInventoryAttributeByModel(model1);
+
+        ModelOfInventoryResponse modelOfInventoryResponse = ModelOfInventoryResponse.builder()
+                        .modelOfInventory(model1)
+                        .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(model1))
+                        .isPresentDynamicInventoryAttribute(dynamicInventoryAttributeByModel != null)
+                        .dynamicInventoryAttribute(dynamicInventoryAttributeByModel)
+                        .build();
+
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
-        model.addAttribute("modelOfInventory", modelOfInventoryService.getModel(id));
+        model.addAttribute("modelOfInventoryResponse", modelOfInventoryResponse);
         return "catalog/model";
     }
 }

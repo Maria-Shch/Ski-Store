@@ -1,0 +1,25 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<div th:fragment="fragment-addToCart (role, modelOfInventoryResponse)" class="d-add-to-cart">
+    <form th:if="${modelOfInventoryResponse.isPresentInStock == true} and ${modelOfInventoryResponse.isPresentDynamicInventoryAttribute == true}"
+          th:action="@{/cart/add/{modelId}(modelId=${modelOfInventoryResponse.modelOfInventory.id})}"
+          th:method="post" class="form-add-to-cart">
+        <p th:text="${modelOfInventoryResponse.dynamicInventoryAttribute.attribute.name} + ', '
+        + ${modelOfInventoryResponse.dynamicInventoryAttribute.attribute.unitOfMeasure.name}" class="p-attribute-name"></p>
+        <select name="selectedValue" class="select-value">
+            <option th:each="value : ${modelOfInventoryResponse.dynamicInventoryAttribute.values}"
+                    th:value="${value.name}" th:text="${value.name}"></option>
+        </select>
+        <button type="submit" class="button-add-cart-white"></button>
+    </form>
+
+    <form th:if="${modelOfInventoryResponse.isPresentInStock == true} and ${modelOfInventoryResponse.isPresentDynamicInventoryAttribute == false}"
+          th:action="@{/cart/add/{modelId}(modelId=${modelOfInventoryResponse.modelOfInventory.id})}"
+          th:method="post" class="form-add-to-cart">
+        <button type="submit" class="button-add-cart-white"></button>
+    </form>
+
+    <div th:if="${modelOfInventoryResponse.isPresentInStock == false}">
+        <p class="p-out-of-stock">Нет в наличии</p>
+    </div>
+</div>
