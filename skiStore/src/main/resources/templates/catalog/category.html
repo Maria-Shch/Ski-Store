@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <title th:text="${categoryResponse.modelType.name}"></title>
-        <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
-        <link th:href="@{/css/category.css}" href="../src/main/resources/static/css/category.css" rel="stylesheet">
-        <link th:href="@{/css/filter.css}" href="../src/main/resources/static/css/filter.css" rel="stylesheet">
-        <link th:href="@{/css/price.css}" href="../src/main/resources/static/css/price.css" rel="stylesheet">
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/category.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/price.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/filter.css}" rel="stylesheet">
     </head>
     <body>
         <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>

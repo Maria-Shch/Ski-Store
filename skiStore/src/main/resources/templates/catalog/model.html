@@ -3,10 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <title th:text="${modelOfInventoryResponse.modelOfInventory.title}"></title>
-        <link th:href="@{/css/header.css}" href="../src/main/resources/static/css/header.css" rel="stylesheet">
-        <link th:href="@{/css/model.css}" href="../src/main/resources/static/css/model.css" rel="stylesheet">
-        <link th:href="@{/css/price.css}" href="../src/main/resources/static/css/price.css" rel="stylesheet">
-        <link th:href="@{/css/addToCart.css}" href="../src/main/resources/static/css/addToCart.css" rel="stylesheet">
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/model.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/price.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/addToCart.css}" rel="stylesheet">
     </head>
     <body>
         <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>

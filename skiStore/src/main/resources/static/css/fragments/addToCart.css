@@ -3,7 +3,7 @@
 }
 
 .button-add-cart-white{
-    background: #1E3D6B url(../images/icons/add_shopping_cart_white.png) no-repeat center;
+    background: var(--dark-blue-color) url(../../images/icons/add_shopping_cart_white.png) no-repeat center;
     background-size: 35px;
     width: var(--icon-cart-x);
     height: var(--icon-cart-x);
@@ -24,7 +24,7 @@
     margin: 10px 0 10px 0px;
     padding: 3px 10px 3px 10px;
     height: 30px;
-    color: rgb(30 61 107);
+    color: var(--dark-blue-color);
     font-size: 20px;
     font-weight: normal;
     background-color: #FFFFFF;
@@ -35,17 +35,16 @@
 }
 
 .p-attribute-name{
-    font-family: Arial;
     font-weight: bold;
     font-size: 20px;
-    color: #1E3D6B;
+    color: var(--dark-blue-color);
     margin: 0;
 }
 
 .p-out-of-stock{
     color: #ffffff;
     font-size: 20px;
-    background-color: #939393cf;
+    background-color: #b8babc;
     padding: 2px 5px;
     border-radius: 5px;
     text-align: center;

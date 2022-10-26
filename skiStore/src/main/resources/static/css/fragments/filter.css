@@ -1,6 +1,6 @@
 .d-filter{
     width: 20%;
-    background-color: #F4F4F4;
+    background-color: var(--light-grey-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,23 +73,21 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .p-filter{
-    font-family: Arial;
     font-weight: bold;
     font-size: 20px;
-    color: #1E3D6B;
+    color: var(--dark-blue-color);
     margin: 10px 0 10px 0;
 }
 
 .p-filter-category-name{
     margin: 0 0 10px 0;
-    font-family: Arial;
     font-weight: bold;
     font-size: 17px;
-    color: #313f54;
+    color: var(--dark-blue-color);
 }
 
 .b-filter{
-    background-color: #5995DD;
+    background-color: var(--blue-color-1);
     width: 135px;
     border-radius: var(--border-radius);
     margin-top: 10px;
@@ -120,7 +118,7 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: var(--border-radius);
     border-style: none;
     box-sizing: border-box;
-    color: #2C5E9E;
+    color: var(--blue-color-2);
     cursor: pointer;
     display: inline-block;
     font-size: 17px;

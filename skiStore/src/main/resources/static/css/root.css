@@ -1,0 +1,17 @@
+:root {
+    --dark-blue-color: #1E3D6B;
+    --dark-blue-color-active: #0f2444;
+    --blue-color-1: #5995DD;
+    --blue-color-2: #2C5E9E;
+    --light-blue-color: #cfe3f5;
+    --light-blue-color-active: #b8d4f8;
+    --light-blue-grey-color:#D7DDE2;
+    --light-grey-color: #F4F4F4;
+    --border-radius: 15px;
+    --border-radius-buttons: 30px;
+    --font-family: system-ui;
+}
+
+body{
+    font-family: var(--font-family);
+}

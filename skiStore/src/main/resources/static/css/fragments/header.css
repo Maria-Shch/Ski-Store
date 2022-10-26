@@ -1,15 +1,12 @@
 :root {
     --icon-background-size: 40px;
-    --icon-width: 40px;
-    --icon-height: 40px;
+    --icon-width-hight: 40px;
     --icon-cursor: pointer;
     --icon-border: none;
-    --border-radius: 15px;
 }
 
 body{
     margin: 0px;
-    font-family: "Arial Unicode MS";
     background-color: rgba(255, 255, 255, 0.34);
     display: flex;
     flex-direction: column;
@@ -20,10 +17,10 @@ body{
 }
 
 .header{
-    padding: 5px 15%;
+    padding: 5px 10%;
     width: 80%;
     height: 70px;
-    background-color: #2C5E9E;
+    background-color: var(--blue-color-2);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -31,7 +28,7 @@ body{
 }
 
 .d-logo-and-title{
-    width: 40%;
+    width: 450px;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -51,7 +48,6 @@ body{
 }
 
 .title{
-    font-family: Arial;
     font-weight: bold;
     font-size: 30px;
     color: #FFFFFF;
@@ -59,7 +55,7 @@ body{
 }
 
 .input-logo{
-    background: url('../images/icons/logo.png') no-repeat;
+    background: url('../../images/icons/logo.png') no-repeat;
     background-size: 60px;
     width: 60px;
     height: 60px;
@@ -68,37 +64,37 @@ body{
 }
 
 .input-login{
-    background: url('../images/icons/login.png');
+    background: url('../../images/icons/login.png');
     background-size: var(--icon-background-size);
-    width: var(--icon-width);
-    height: var(--icon-height);
+    width: var(--icon-width-hight);
+    height: var(--icon-width-hight);
     cursor: var(--icon-cursor);
     border: var(--icon-border);
 }
 
 .input-cart{
-    background: url('../images/icons/shopping_cart.png');
+    background: url('../../images/icons/shopping_cart.png');
     background-size: var(--icon-background-size);
-    width: var(--icon-width);
-    height: var(--icon-height);
+    width: var(--icon-width-hight);
+    height: var(--icon-width-hight);
     cursor: var(--icon-cursor);
     border: var(--icon-border);
 }
 
 .input-account{
-    background: url('../images/icons/account.png');
+    background: url('../../images/icons/account.png');
     background-size: var(--icon-background-size);
-    width: var(--icon-width);
-    height: var(--icon-height);
+    width: var(--icon-width-hight);
+    height: var(--icon-width-hight);
     cursor: var(--icon-cursor);
     border: var(--icon-border);
 }
 
 .input-logout{
-    background: url('../images/icons/logout.png');
+    background: url('../../images/icons/logout.png');
     background-size: var(--icon-background-size);
-    width: var(--icon-width);
-    height: var(--icon-height);
+    width: var(--icon-width-hight);
+    height: var(--icon-width-hight);
     cursor: var(--icon-cursor);
     border: var(--icon-border);
 }

@@ -78,15 +78,14 @@
 }
 
 .p-title-category{
-    font-family: Arial;
     font-weight: bold;
     font-size: 25px;
-    color: #1E3D6B;
+    color: var(--dark-blue-color);
     margin: 0px 20px 20px 20px;
 }
 
 .a-header{
-    color: #2D4B66;
+    color: var(--dark-blue-color);
     font-size: 18px;
     font-weight: bold;
     text-overflow: ellipsis;
