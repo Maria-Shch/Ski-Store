@@ -6,6 +6,7 @@ import ru.shcherbatykh.skiStore.classes.DynamicInventoryAttribute;
 import ru.shcherbatykh.skiStore.models.Inventory;
 import ru.shcherbatykh.skiStore.models.InventoryAttributeValue;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
+import ru.shcherbatykh.skiStore.models.Value;
 import ru.shcherbatykh.skiStore.repositories.InventoryRepository;
 
 import java.util.ArrayList;
@@ -43,6 +44,14 @@ public class InventoryService {
         dynamicInventoryAttribute.setValues(inventoryAttributeValues.stream().map(InventoryAttributeValue::getValue).toList());
         dynamicInventoryAttribute.setUnitOfMeasure(inventoryAttributeValues.get(0).getAttribute().getUnitOfMeasure());
         return dynamicInventoryAttribute;
+    }
+
+    public Inventory getInventoryByModelAndValue(ModelOfInventory model, Value value){
+        if (value == null){
+            return inventoryRepository.getFirstByModelOfInventory(model);
+        } else{
+            return inventoryRepository.getInventoryByModelOfInventoryAndValue(model.getId(), value.getId());
+        }
     }
 
     @Transactional

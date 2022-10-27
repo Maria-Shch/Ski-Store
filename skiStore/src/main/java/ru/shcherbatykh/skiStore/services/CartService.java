@@ -2,8 +2,7 @@ package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.shcherbatykh.skiStore.models.Cart;
-import ru.shcherbatykh.skiStore.models.User;
+import ru.shcherbatykh.skiStore.models.*;
 import ru.shcherbatykh.skiStore.repositories.CartRepository;
 
 import java.util.List;
@@ -12,9 +11,11 @@ import java.util.List;
 public class CartService {
 
     private final CartRepository cartRepository;
+    private final InventoryService inventoryService;
 
-    public CartService(CartRepository cartRepository) {
+    public CartService(CartRepository cartRepository, InventoryService inventoryService) {
         this.cartRepository = cartRepository;
+        this.inventoryService = inventoryService;
     }
 
     @Transactional
@@ -25,5 +26,10 @@ public class CartService {
     @Transactional
     public void addCart(Cart newCart) {
         cartRepository.save(newCart);
+    }
+
+    public void addToCart(User user, ModelOfInventory modelOfInventory, Value selectedValue) {
+        Inventory inventory = inventoryService.getInventoryByModelAndValue(modelOfInventory, selectedValue);
+        addCart(new Cart(null, user, inventory, 1));
     }
 }

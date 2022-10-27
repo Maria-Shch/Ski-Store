@@ -11,6 +11,8 @@ import ru.shcherbatykh.skiStore.classes.Filter;
 import ru.shcherbatykh.skiStore.classes.ModelOfInventoryResponse;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
+import ru.shcherbatykh.skiStore.models.User;
+import ru.shcherbatykh.skiStore.models.Value;
 import ru.shcherbatykh.skiStore.services.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,19 +25,20 @@ public class CatalogController {
 
     private final ModelOfInventoryService modelOfInventoryService;
     private final ModelTypeService modelTypeService;
-    private final SpecificationsService specificationsService;
     private final UserService userService;
     private final FiltrationService filtrationService;
     private final InventoryService inventoryService;
+    private final CartService cartService;
 
     public CatalogController(ModelOfInventoryService modelOfInventoryService, ModelTypeService modelTypeService,
-                             SpecificationsService specificationsService, UserService userService, FiltrationService filtrationService, InventoryService inventoryService) {
+                             UserService userService, FiltrationService filtrationService,
+                             InventoryService inventoryService, CartService cartService) {
         this.modelOfInventoryService = modelOfInventoryService;
         this.modelTypeService = modelTypeService;
-        this.specificationsService = specificationsService;
         this.userService = userService;
         this.filtrationService = filtrationService;
         this.inventoryService = inventoryService;
+        this.cartService = cartService;
     }
 
     @GetMapping
@@ -47,19 +50,18 @@ public class CatalogController {
 
     @GetMapping(value = {"/ski_poles", "/roller_skis", "/ski_boots", "/bindings", "/roller_ski_poles", "/ski"})
     public String getCategoryPage(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString());
+        fillingModelForCategoryPage(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString(), null);
         return "catalog/category";
     }
 
     @PostMapping(value = {"/ski_poles", "/roller_skis", "/ski_boots", "/bindings", "/roller_ski_poles", "/ski"})
     public String getCategoryPageAfterFilter(HttpServletRequest request, Model model, @AuthenticationPrincipal UserDetails userDetails,
                                              @ModelAttribute("filter") Filter filter) {
-
-        modelFilling(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString(), filter);
+        fillingModelForCategoryPage(model, userDetails, Paths.get(request.getRequestURI()).getFileName().toString(), filter);
         return "catalog/category";
     }
 
-    private Model modelFilling(Model model, UserDetails userDetails, String modelTypeNameEnglish){
+    private void fillingModelForCategoryPage(Model model, UserDetails userDetails, String modelTypeNameEnglish, Filter filter){
         ModelType modelType = modelTypeService.getModelTypeByNameEn(modelTypeNameEnglish);
         List<ModelOfInventory> models = modelOfInventoryService.getModelsByModelType(modelType);
 
@@ -68,37 +70,47 @@ public class CatalogController {
                 .modelsOfInventory(models)
                 .build();
 
-        Filter filter = Filter.builder()
-                .filtrationCategories(filtrationService.getFiltrationParams(modelType))
-                .build();
+        if(filter == null){
+            filter = Filter.builder()
+                    .filtrationCategories(filtrationService.getFiltrationParams(modelType))
+                    .build();
+        }
 
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("categoryResponse", categoryResponse);
         model.addAttribute("filter", filter);
-        return model;
-    }
-
-    private Model modelFilling(Model model, UserDetails userDetails, String modelTypeNameEnglish, Filter filter){
-        modelFilling(model, userDetails, modelTypeNameEnglish);
-        model.addAttribute("filter", filter);
-        return model;
     }
 
     @GetMapping(value = {"/ski_poles/{id}", "/roller_skis/{id}", "/ski_boots/{id}", "/bindings/{id}", "/roller_ski_poles/{id}", "/ski/{id}"})
-    public String getModelPage( Model model, @AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id) {
+    public String getModelPage(Model model, @AuthenticationPrincipal UserDetails userDetails,  @PathVariable long id) {
+        fillingModelForModelPage(model, userDetails, id);
+        return "catalog/model";
+    }
 
-        ModelOfInventory model1 = modelOfInventoryService.getModel(id);
-        DynamicInventoryAttribute dynamicInventoryAttributeByModel = inventoryService.getDynamicInventoryAttributeByModel(model1);
+    @PostMapping("/add/{modelId}")
+    public String addInventoryToCart(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long modelId,
+                                     @ModelAttribute("selectedValue") Value selectedValue) {
+
+        ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
+        User user = userService.getUserByUserDetails(userDetails);
+        cartService.addToCart(user, modelOfInventory, selectedValue);
+
+        fillingModelForModelPage(model, userDetails, modelId);
+        return String.format("redirect:/catalog/%s/%d", modelOfInventory.getModelType().getNameEnglish(), modelId);
+    }
+
+    private void fillingModelForModelPage(Model model, UserDetails userDetails, long idModel){
+        ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(idModel);
+        DynamicInventoryAttribute dynamicInventoryAttributeByModel = inventoryService.getDynamicInventoryAttributeByModel(modelOfInventory);
 
         ModelOfInventoryResponse modelOfInventoryResponse = ModelOfInventoryResponse.builder()
-                        .modelOfInventory(model1)
-                        .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(model1))
-                        .isPresentDynamicInventoryAttribute(dynamicInventoryAttributeByModel != null)
-                        .dynamicInventoryAttribute(dynamicInventoryAttributeByModel)
-                        .build();
+                .modelOfInventory(modelOfInventory)
+                .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(modelOfInventory))
+                .isPresentDynamicInventoryAttribute(dynamicInventoryAttributeByModel != null)
+                .dynamicInventoryAttribute(dynamicInventoryAttributeByModel)
+                .build();
 
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("modelOfInventoryResponse", modelOfInventoryResponse);
-        return "catalog/model";
     }
 }
