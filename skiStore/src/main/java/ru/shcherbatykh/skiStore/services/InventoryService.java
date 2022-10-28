@@ -47,7 +47,7 @@ public class InventoryService {
     }
 
     public Inventory getInventoryByModelAndValue(ModelOfInventory model, Value value){
-        if (value == null){
+        if (value.getId() == 0){
             return inventoryRepository.getFirstByModelOfInventory(model);
         } else{
             return inventoryRepository.getInventoryByModelOfInventoryAndValue(model.getId(), value.getId());

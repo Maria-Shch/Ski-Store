@@ -11,4 +11,7 @@ import java.util.List;
 public interface CartRepository extends CrudRepository<Cart, Long> {
 
     List<Cart> findAllByUser(User user);
+
+    @Override
+    void deleteById(Long id);
 }

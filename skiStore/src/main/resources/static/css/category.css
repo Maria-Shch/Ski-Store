@@ -35,7 +35,7 @@
 
 .d-model{
     width: 100%;
-    background-color: #F4F4F4;;
+    background-color: var(--light-blue-grey-color);
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
