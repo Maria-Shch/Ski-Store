@@ -3,6 +3,7 @@ package ru.shcherbatykh.skiStore.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.skiStore.classes.CartElement;
+import ru.shcherbatykh.skiStore.classes.CartResponse;
 import ru.shcherbatykh.skiStore.models.*;
 import ru.shcherbatykh.skiStore.repositories.CartRepository;
 import ru.shcherbatykh.skiStore.repositories.InventoryAttributeValueRepository;
@@ -38,10 +39,28 @@ public class CartService {
         addCart(new Cart(null, user, inventory, 1));
     }
 
+    //todo повторяющийся код
+    public Double getResultPriceByCartResponse(CartResponse cartResponse){
+        return cartResponse.getCartElements().stream()
+                .filter(CartElement::getSelected)
+                .mapToDouble(e -> e.getModelOfInventory().getPrice())
+                .reduce(Double::sum)
+                .orElse(0);
+    }
+
+    public Double getResultDiscountPriceByCartResponse(CartResponse cartResponse){
+        return cartResponse.getCartElements().stream()
+                .filter(CartElement::getSelected)
+                .mapToDouble(e -> e.getModelOfInventory().getDiscountPrice())
+                .reduce(Double::sum)
+                .orElse(0);
+    }
+
     @Transactional
     public void deleteCartById(long id){
         cartRepository.deleteById(id);
     }
+
 
     public List<CartElement> getCartElementsByUser(User user) {
         List<Cart> carts = getCartsByUser(user);

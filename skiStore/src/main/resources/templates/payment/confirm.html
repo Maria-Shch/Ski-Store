@@ -1,0 +1,29 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Покупка</title>
+    <link th:href="@{/css/root.css}" rel="stylesheet">
+    <link th:href="@{/css/payment.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
+    <div class="d-container">
+        <div class="d-title-payment">
+            <p class="p-payment">Завершение оплаты</p>
+        </div>
+        <div class="d-container">
+            <p class="p-return-to-cart">Оплата прошла успешно. Спасибо за покупку.</p>
+            <div class="d-return-to-cart">
+                <p class="p-return-to-cart">
+                    Историю своих покупок вы можете посмотреть в&nbsp
+                </p>
+                <a class="p-return-to-cart" href="/account">
+                    личном кабинете
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

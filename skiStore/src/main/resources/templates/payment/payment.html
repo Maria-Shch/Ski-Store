@@ -1,0 +1,59 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Покупка</title>
+    <link th:href="@{/css/root.css}" rel="stylesheet">
+    <link th:href="@{/css/payment.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/price.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/inventoryCardInCart.css}" rel="stylesheet">
+</head>
+<body>
+    <div th:replace="~{fragments/header :: fragment-header (${user.role})}"></div>
+    <div class="d-container">
+        <div class="d-title-payment">
+            <p class="p-payment">Покупка</p>
+        </div>
+        <form class="form-personal-data" method="post" th:action="@{/payment/confirm}" th:object="${user}">
+            <p class="p-header">Заполните личные данные</p>
+
+            <input type="hidden" th:field="*{id}" th:value="${user.id}">
+            <input class="input-field" type="text" th:field="*{lastname}" th:text="${lastname}" placeholder="Фамилия" required>
+            <input class="input-field" type="text" th:field="*{name}" th:text="${name}" placeholder="Имя" required>
+            <input class="input-field" type="text" th:field="*{patronymic}" th:text="${patronymic}" placeholder="Отчество" required>
+            <input class="input-field" type="email" th:field="*{username}" th:text="${username}" placeholder="Электронная почта" required>
+            <input class="input-field" type="tel" th:field="*{phoneNumber}" th:text="${phoneNumber}" placeholder="+7-(_ _ _)" required>
+            <select class="input-field" th:field="*{city}">
+                <option th:value=${user.city.id} th:text="${user.city.name}"></option>
+                <option th:each="city : ${cities}" th:value=${city.id} th:text="${city.name}"></option>
+            </select>
+            <input class="input-field" type="text" th:field="*{streetName}" th:text="${streetName}" placeholder="Улица" required>
+            <input class="input-field" type="text" th:field="*{houseNumber}" th:text="${houseNumber}" placeholder="Номер дома" required>
+            <input class="input-field" type="number" th:field="*{flatNumber}" th:text="${flatNumber}" placeholder="Номер квартиры" required>
+
+            <div class="d-result-price">
+                <p class="">Итого:&nbsp</p>
+                <p  th:text="${resultPrice} + ' ₽'" class="p-price"></p>
+            </div>
+            <div class="d-result-price">
+                <p class="">Со скидкой:&nbsp</p>
+                <p  th:text="${resultDiscountPrice} + ' ₽'" class="p-result-price"></p>
+            </div>
+            <button class="b-confirm-payment" type="submit">Оплатить</button>
+        </form>
+        <div th:if="${selectedCartElements.size() != 0}" class="d-selected-inventory">
+            <p class="p-header">Вы выбрали:</p>
+            <div th:each="cartElement: *{selectedCartElements}" class="d-cart">
+                <div th:replace="~{fragments/inventoryCardInCart :: fragment-inventoryCardInCart (${cartElement}, ${false})}"></div>
+            </div>
+            <div class="d-return-to-cart">
+                <p class="p-return-to-cart">Для того, чтобы изменить выбранные товары, вы можете вернуться в&nbsp</p>
+                <a class="p-return-to-cart" href="/cart">
+                    корзину
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

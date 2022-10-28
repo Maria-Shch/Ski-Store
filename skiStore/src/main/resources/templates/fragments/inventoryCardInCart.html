@@ -1,0 +1,34 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<div th:fragment="fragment-inventoryCardInCart (cartElement, isDeletable)" class="d-inventory-in-cart">
+    <div class="d-image">
+        <img class="img-model" th:src="@{../images/{modelTypeNameEnglish}/{imageTitle}
+            (modelTypeNameEnglish=${cartElement.modelOfInventory.modelType.nameEnglish},
+            imageTitle=${cartElement.modelOfInventory.imageTitle})}">
+    </div>
+    <div class="d-info-price-delete">
+        <div class="d-info-price">
+            <div class="d-info">
+                <a th:href="@{/catalog/{modelTypeNameEnglish}/{id}
+                    (modelTypeNameEnglish=${cartElement.modelOfInventory.modelType.nameEnglish},
+                     id=${cartElement.modelOfInventory.id})}"
+                   th:text="${cartElement.modelOfInventory.modelType.name} + ' ' +
+                            ${cartElement.modelOfInventory.brand.name} + ' ' +
+                            ${cartElement.modelOfInventory.title}"
+                   class="a-header"></a>
+                <p th:text="'Бренд: ' + ${cartElement.modelOfInventory.brand.name}" class="p-description">
+                <p th:text="'Год: ' + ${cartElement.modelOfInventory.year.name}" class="p-description">
+                <p th:if="${cartElement.attribute != null}"
+                   th:text="${cartElement.attribute.name} + ': ' +
+                            ${cartElement.value.name} + ' ' +
+                            ${cartElement.attribute.unitOfMeasure.name}"
+                   class="p-description">
+            </div>
+            <div th:replace="~{fragments/price :: fragment-price (${cartElement.modelOfInventory})}"></div>
+        </div>
+        <div th:if="${isDeletable == true}" class="d-delete">
+            <a th:href="@{/cart/delete/{cartId}(cartId=${cartElement.cart.id})}"
+               class="a-delete-from-cart">Удалить из корзины</a>
+        </div>
+    </div>
+</div>

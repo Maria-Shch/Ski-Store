@@ -48,10 +48,10 @@ public class User {
     private String streetName;
 
     @JoinColumn(name = "house_number")
-    private int houseNumber;
+    private String houseNumber;
 
     @JoinColumn(name = "flat_number")
-    private int flatNumber;
+    private Integer flatNumber;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @ToString.Exclude

@@ -49,4 +49,14 @@ WHERE static_attribute_id=3;
 
 SELECT T.* FROM models m
 JOIN model_attribute_values T On m.id=T.model_id
-WHERE m.id=35
+WHERE m.id=35;
+
+SELECT * FROM inventory
+  LEFT JOIN models ON inventory.model_id = models.id
+  LEFT JOIN inventory_attribute_values ON inventory.id = inventory_attribute_values.inventory_id;
+
+SELECT inventory.id, model_id, inventory.quantity FROM inventory
+LEFT JOIN models ON inventory.model_id = models.id
+LEFT JOIN inventory_attribute_values ON inventory.id = inventory_attribute_values.inventory_id
+LEFT JOIN values ON inventory_attribute_values.value_id = values.id
+WHERE model_id=31 AND value_id=154;

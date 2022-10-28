@@ -37,12 +37,6 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @PostMapping("/to_payment")
-    public String getPaymentPage(Model model, @AuthenticationPrincipal UserDetails userDetails,
-                                 @ModelAttribute("cartResponse") CartResponse cartResponse) {
-        return null;
-    }
-
     private void fillingModelCartPage(Model model, UserDetails userDetails) {
         List<CartElement> cartElements = cartService.getCartElementsByUser(userService.getUserByUserDetails(userDetails));
         CartResponse cartResponse = CartResponse.builder()

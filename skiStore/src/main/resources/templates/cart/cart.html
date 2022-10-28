@@ -7,6 +7,7 @@
     <link th:href="@{/css/cart.css}" rel="stylesheet">
     <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
     <link th:href="@{/css/fragments/price.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/inventoryCardInCart.css}" rel="stylesheet">
 </head>
     <body>
         <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
@@ -15,8 +16,8 @@
                 <p class="p-cart">Корзина</p>
             </div>
             <div class="d-carts">
-                <form class="form-container" method="post" th:action="@{/cart/to_payment}"
-                      th:object="${cartResponse}">
+                <form class="form-container" method="post" th:action="@{/payment}"
+                      th:object="${cartResponse}"  id="cartForm">
                     <div th:each="cartElement, iterator : *{cartElements}" class="d-cart">
                         <div class="d-input-checkbox">
                             <input type="hidden" th:field="*{cartElements[__${iterator.index}__].cart}"/>
@@ -26,42 +27,12 @@
                             <input type="checkbox" name="cartElements" th:value="*{cartElements[__${iterator.index}__].cart.id}"
                                    th:field="*{cartElements[__${iterator.index}__].selected}"/>
                         </div>
-                        <div class="d-cart-inventory">
-                            <div class="d-image">
-                                <img class="img-model"
-                                     th:src="@{../images/{modelTypeNameEnglish}/{imageTitle}
-                                     (modelTypeNameEnglish=${cartElement.modelOfInventory.modelType.nameEnglish},
-                                      imageTitle=${cartElement.modelOfInventory.imageTitle})}">
-                            </div>
-                            <div class="d-info-price-delete">
-                                <div class="d-info-price">
-                                    <div class="d-info">
-                                        <a th:href="@{/catalog/{modelTypeNameEnglish}/{id}(modelTypeNameEnglish=${cartElement.modelOfInventory.modelType.nameEnglish},
-                                        id=${cartElement.modelOfInventory.id})}"
-                                           th:text="${cartElement.modelOfInventory.modelType.name} + ' ' +
-                                        ${cartElement.modelOfInventory.brand.name} + ' ' +
-                                        ${cartElement.modelOfInventory.title}"
-                                           class="a-header"></a>
-                                        <p th:text="'Бренд: ' + ${cartElement.modelOfInventory.brand.name}" class="p-description">
-                                        <p th:text="'Год: ' + ${cartElement.modelOfInventory.year.name}" class="p-description">
-                                        <p th:if="${cartElement.attribute != null}"
-                                           th:text="${cartElement.attribute.name} + ': ' +
-                                            ${cartElement.value.name} + ' ' +
-                                            ${cartElement.attribute.unitOfMeasure.name}"
-                                           class="p-description">
-                                    </div>
-                                    <div th:replace="~{fragments/price :: fragment-price (${cartElement.modelOfInventory})}"></div>
-                                </div>
-                                <div class="d-delete">
-                                    <a th:href="@{/cart/delete/{cartId}(cartId=${cartElement.cart.id})}"
-                                       class="a-delete-from-cart">Удалить из корзины</a>
-                                </div>
-                            </div>
-                        </div>
+                        <div th:replace="~{fragments/inventoryCardInCart :: fragment-inventoryCardInCart (${cartElement}, ${true})}"></div>
                     </div>
                     <button class="b-to-payment" type="submit">Перейти к оплате</button>
                 </form>
             </div>
         </div>
+        <script type="text/javascript" src="js/check_select_cart.js"></script>
     </body>
 </html>

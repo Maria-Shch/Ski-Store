@@ -46,3 +46,5 @@ public class SkiStoreApplication {
 }
 
 //todo sort model types before sending to front
+//todo at least one inventory checked for go to payment
+//todo able to change username (email)

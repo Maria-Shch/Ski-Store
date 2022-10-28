@@ -11,6 +11,7 @@ import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -57,6 +58,39 @@ public class UserService {
             return Role.GUEST;
     }
 
+    public void updateUserPersonalData(User newUser){
+        User oldUser =  getUser(newUser.getId());
+
+        if(!Objects.equals(oldUser.getName(), newUser.getName()))
+            oldUser.setName(newUser.getName());
+
+        if(!Objects.equals(oldUser.getLastname(), newUser.getLastname()))
+            oldUser.setLastname(newUser.getLastname());
+
+        if(!Objects.equals(oldUser.getPatronymic(), newUser.getPatronymic()))
+            oldUser.setPatronymic(newUser.getPatronymic());
+
+        if(!Objects.equals(oldUser.getUsername(), newUser.getUsername()))
+            oldUser.setUsername(newUser.getUsername());
+
+        if(!Objects.equals(oldUser.getPhoneNumber(), newUser.getPhoneNumber()))
+            oldUser.setPhoneNumber(newUser.getPhoneNumber());
+
+        if(!Objects.equals(oldUser.getCity(), newUser.getCity()))
+            oldUser.setCity(newUser.getCity());
+
+        if(!Objects.equals(oldUser.getStreetName(), newUser.getStreetName()))
+            oldUser.setStreetName(newUser.getStreetName());
+
+        if(!Objects.equals(oldUser.getHouseNumber(), newUser.getHouseNumber()))
+            oldUser.setHouseNumber(newUser.getHouseNumber());
+
+        if(!Objects.equals(oldUser.getFlatNumber(), newUser.getFlatNumber()))
+            oldUser.setFlatNumber(newUser.getFlatNumber());
+
+        userRepository.save(oldUser);
+    }
+
     @Transactional
     public void updateName(long idUser, String newName) {
         User user = getUser(idUser);
@@ -93,7 +127,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateHouseNumber(long idUser, int newHouseNumber) {
+    public void updateHouseNumber(long idUser, String newHouseNumber) {
         User user = getUser(idUser);
         user.setHouseNumber(newHouseNumber);
         userRepository.save(user);
