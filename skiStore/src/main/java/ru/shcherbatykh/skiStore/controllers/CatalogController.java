@@ -90,7 +90,6 @@ public class CatalogController {
     @PostMapping("/add/{modelId}")
     public String addInventoryToCart(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long modelId,
                                      @ModelAttribute("selectedValue") Value selectedValue) {
-
         ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
         User user = userService.getUserByUserDetails(userDetails);
         cartService.addToCart(user, modelOfInventory, selectedValue);

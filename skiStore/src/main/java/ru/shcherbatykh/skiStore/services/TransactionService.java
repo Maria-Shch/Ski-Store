@@ -18,8 +18,8 @@ public class TransactionService {
     }
 
     @Transactional
-    public void addTransaction(Transaction newTransaction) {
-        transactionRepository.save(newTransaction);
+    public Transaction addTransaction(Transaction newTransaction) {
+        return transactionRepository.save(newTransaction);
     }
 
     @Transactional

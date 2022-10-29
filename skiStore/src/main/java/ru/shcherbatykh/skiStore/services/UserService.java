@@ -10,7 +10,6 @@ import ru.shcherbatykh.skiStore.models.City;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.UserRepository;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -22,11 +21,6 @@ public class UserService {
     public UserService(UserRepository userRepository, @Lazy BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
-    @Transactional
-    public List<User> getUsers() {
-        return userRepository.findAll();
     }
 
     @Transactional

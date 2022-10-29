@@ -21,11 +21,6 @@ public class InventoryService {
         this.inventoryRepository = inventoryRepository;
     }
 
-    @Transactional
-    public List<Inventory> getInventories() {
-        return inventoryRepository.findAll();
-    }
-
     public DynamicInventoryAttribute getDynamicInventoryAttributeByModel(ModelOfInventory model){
         List<Inventory> presentInventoriesByModel = getPresentInventoriesByModel(model);
         if(presentInventoriesByModel.isEmpty()) return null;
@@ -46,6 +41,7 @@ public class InventoryService {
         return dynamicInventoryAttribute;
     }
 
+    @Transactional
     public Inventory getInventoryByModelAndValue(ModelOfInventory model, Value value){
         if (value.getId() == 0){
             return inventoryRepository.getFirstByModelOfInventory(model);
@@ -55,22 +51,18 @@ public class InventoryService {
     }
 
     @Transactional
-    public Inventory getInventory(long idInventory) {
-        return inventoryRepository.getInventoryById(idInventory);
-    }
-
-    @Transactional
     public List<Inventory> getPresentInventoriesByModel(ModelOfInventory modelOfInventory) {
         return inventoryRepository.getAllByModelOfInventoryAndQuantityGreaterThan(modelOfInventory, 0);
     }
 
+    @Transactional
     public boolean checkIsPresentInventoryInStockByModel(ModelOfInventory model) {
         return !getPresentInventoriesByModel(model).isEmpty();
     }
 
     @Transactional
-    public void updateQuantity(long idInventory, int newQuantity) {
-        Inventory inventory = getInventory(idInventory);
+    public void inventorySale(Inventory inventory, int quantity) {
+        int newQuantity = inventory.getQuantity()-quantity;
         inventory.setQuantity(newQuantity);
         inventoryRepository.save(inventory);
     }

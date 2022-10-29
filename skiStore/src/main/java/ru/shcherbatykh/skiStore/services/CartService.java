@@ -57,10 +57,14 @@ public class CartService {
     }
 
     @Transactional
-    public void deleteCartById(long id){
-        cartRepository.deleteById(id);
+    public void deleteCart(Cart cart){
+        cartRepository.deleteById(cart.getId());
     }
 
+    @Transactional
+    public void deleteCartById(long idCart){
+        cartRepository.deleteById(idCart);
+    }
 
     public List<CartElement> getCartElementsByUser(User user) {
         List<Cart> carts = getCartsByUser(user);

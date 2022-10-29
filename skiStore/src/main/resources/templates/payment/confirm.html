@@ -6,6 +6,8 @@
     <link th:href="@{/css/root.css}" rel="stylesheet">
     <link th:href="@{/css/payment.css}" rel="stylesheet">
     <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/price.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/inventoryCardInCart.css}" rel="stylesheet">
 </head>
 <body>
     <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
@@ -13,7 +15,7 @@
         <div class="d-title-payment">
             <p class="p-payment">Завершение оплаты</p>
         </div>
-        <div class="d-container">
+        <div class="d-content-confirm">
             <p class="p-return-to-cart">Оплата прошла успешно. Спасибо за покупку.</p>
             <div class="d-return-to-cart">
                 <p class="p-return-to-cart">
@@ -22,6 +24,10 @@
                 <a class="p-return-to-cart" href="/account">
                     личном кабинете
                 </a>
+            </div>
+            <p class="p-header-confirm"> Вы оплатили: </p>
+            <div th:each="cartElement: *{paymentResponse.selectedCartElements}" class="d-cart">
+                <div th:replace="~{fragments/inventoryCardInCart :: fragment-inventoryCardInCart (${cartElement}, ${false})}"></div>
             </div>
         </div>
     </div>

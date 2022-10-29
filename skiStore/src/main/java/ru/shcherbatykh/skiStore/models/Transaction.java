@@ -30,4 +30,8 @@ public class Transaction {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "transaction")
     @ToString.Exclude
     private List<Sale> sales = new ArrayList<>();
+
+    public Transaction(User user) {
+        this.user = user;
+    }
 }

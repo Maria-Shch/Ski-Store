@@ -1,5 +1,6 @@
 package ru.shcherbatykh.skiStore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +10,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sales")
 @NoArgsConstructor
+@AllArgsConstructor
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transaction_id")
@@ -24,5 +26,5 @@ public class Sale {
 
     private Double price;
     private Integer discount;
-    private Double quantity;
+    private Integer quantity;
 }

@@ -14,8 +14,6 @@ public interface InventoryRepository extends CrudRepository<Inventory, Long> {
 
     List<Inventory> findAll();
 
-    Inventory getInventoryById(long id);
-
     List<Inventory> getAllByModelOfInventoryAndQuantityGreaterThan(ModelOfInventory model, int quantity);
 
     Inventory getFirstByModelOfInventory(ModelOfInventory model);

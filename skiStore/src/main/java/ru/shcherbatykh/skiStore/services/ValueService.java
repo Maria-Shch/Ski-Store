@@ -8,26 +8,18 @@ import ru.shcherbatykh.skiStore.models.ModelAttributeValue;
 import ru.shcherbatykh.skiStore.models.Value;
 import ru.shcherbatykh.skiStore.repositories.InventoryAttributeValueRepository;
 import ru.shcherbatykh.skiStore.repositories.ModelAttributeValueRepository;
-import ru.shcherbatykh.skiStore.repositories.ValueRepository;
 
 import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class ValueService {
-    private final ValueRepository valueRepository;
     private final InventoryAttributeValueRepository inventoryAttributeValueRepository;
     private final ModelAttributeValueRepository modelAttributeValueRepository;
 
-    public ValueService(ValueRepository valueRepository, InventoryAttributeValueRepository inventoryAttributeValueRepository, ModelAttributeValueRepository modelAttributeValueRepository) {
-        this.valueRepository = valueRepository;
+    public ValueService( InventoryAttributeValueRepository inventoryAttributeValueRepository, ModelAttributeValueRepository modelAttributeValueRepository) {
         this.inventoryAttributeValueRepository = inventoryAttributeValueRepository;
         this.modelAttributeValueRepository = modelAttributeValueRepository;
-    }
-
-    @Transactional
-    public List<Value> getValuesByAttribute(Attribute attribute) {
-        return valueRepository.findAllByAttribute(attribute);
     }
 
     @Transactional

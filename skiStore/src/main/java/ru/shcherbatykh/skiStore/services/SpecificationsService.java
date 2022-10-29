@@ -18,11 +18,6 @@ public class SpecificationsService {
     }
 
     @Transactional
-    public List<Specifications> getSpecifications() {
-        return specificationsRepository.findAll();
-    }
-
-    @Transactional
     public List<Specifications> getSpecificationsByModelType(ModelType modelType) {
         return specificationsRepository.findAllByModelType(modelType);
     }
