@@ -10,6 +10,7 @@ import ru.shcherbatykh.skiStore.models.Value;
 import ru.shcherbatykh.skiStore.repositories.InventoryRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -36,7 +37,10 @@ public class InventoryService {
         DynamicInventoryAttribute dynamicInventoryAttribute = new DynamicInventoryAttribute();
 
         dynamicInventoryAttribute.setAttribute(inventoryAttributeValues.get(0).getAttribute());
-        dynamicInventoryAttribute.setValues(inventoryAttributeValues.stream().map(InventoryAttributeValue::getValue).toList());
+        dynamicInventoryAttribute.setValues(inventoryAttributeValues.stream()
+                .map(InventoryAttributeValue::getValue)
+                .sorted(Comparator.comparing(Value::getName))
+                .toList());
         dynamicInventoryAttribute.setUnitOfMeasure(inventoryAttributeValues.get(0).getAttribute().getUnitOfMeasure());
         return dynamicInventoryAttribute;
     }

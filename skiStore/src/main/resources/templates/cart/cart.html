@@ -15,7 +15,7 @@
             <div class="d-title-cart">
                 <p class="p-cart">Корзина</p>
             </div>
-            <div class="d-carts">
+            <div th:if="${cartResponse.cartElements.size() != 0}" class="d-carts">
                 <form class="form-container" method="post" th:action="@{/payment}"
                       th:object="${cartResponse}"  id="cartForm">
                     <div th:each="cartElement, iterator : *{cartElements}" class="d-cart">
@@ -31,6 +31,9 @@
                     </div>
                     <button class="b-to-payment" type="submit">Перейти к оплате</button>
                 </form>
+            </div>
+            <div th:if="${cartResponse.cartElements.size() == 0}" class="d-carts">
+                <p class="p-empty-cart">Ваша корзина пуста</p>
             </div>
         </div>
         <script type="text/javascript" src="js/check_select_cart.js"></script>

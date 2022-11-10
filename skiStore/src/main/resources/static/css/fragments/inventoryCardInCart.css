@@ -84,7 +84,7 @@
     font-weight: bold;
     font-size: 25px;
     color: var(--dark-blue-color);
-    margin: 0px 20px 20px 20px;
+    margin: 0px 20px 20px 0;
 }
 
 .a-delete-from-cart{

@@ -22,6 +22,7 @@
     background-color:  var(--light-blue-grey-color);
     margin: 10px;
     border-radius: var(--border-radius);
+    padding: 7px;
 }
 
 .p-modeltype-name{

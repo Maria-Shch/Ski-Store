@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.skiStore.classes.Role;
-import ru.shcherbatykh.skiStore.models.City;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.UserRepository;
 
@@ -52,7 +51,9 @@ public class UserService {
             return Role.GUEST;
     }
 
-    public void updateUserPersonalData(User newUser){
+    // This method DOES NOT change the username (email) if a new value arrives.
+    // This is done due to the nuances of working with SpringSecurity
+    public User updateUserPersonalData(User newUser){
         User oldUser =  getUser(newUser.getId());
 
         if(!Objects.equals(oldUser.getName(), newUser.getName()))
@@ -63,9 +64,6 @@ public class UserService {
 
         if(!Objects.equals(oldUser.getPatronymic(), newUser.getPatronymic()))
             oldUser.setPatronymic(newUser.getPatronymic());
-
-        if(!Objects.equals(oldUser.getUsername(), newUser.getUsername()))
-            oldUser.setUsername(newUser.getUsername());
 
         if(!Objects.equals(oldUser.getPhoneNumber(), newUser.getPhoneNumber()))
             oldUser.setPhoneNumber(newUser.getPhoneNumber());
@@ -83,54 +81,7 @@ public class UserService {
             oldUser.setFlatNumber(newUser.getFlatNumber());
 
         userRepository.save(oldUser);
-    }
 
-    @Transactional
-    public void updateName(long idUser, String newName) {
-        User user = getUser(idUser);
-        user.setName(newName);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updatePatronymic(long idUser, String newPatronymic) {
-        User user = getUser(idUser);
-        user.setPatronymic(newPatronymic);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updatePhoneNumber(long idUser, String newPhoneNumber) {
-        User user = getUser(idUser);
-        user.setPhoneNumber(newPhoneNumber);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updateCity(long idUser, City newCity) {
-        User user = getUser(idUser);
-        user.setCity(newCity);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updateStreetName(long idUser, String newStreetName) {
-        User user = getUser(idUser);
-        user.setStreetName(newStreetName);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updateHouseNumber(long idUser, String newHouseNumber) {
-        User user = getUser(idUser);
-        user.setHouseNumber(newHouseNumber);
-        userRepository.save(user);
-    }
-
-    @Transactional
-    public void updateFlatNumber(long idUser, int newFlatNumber) {
-        User user = getUser(idUser);
-        user.setFlatNumber(newFlatNumber);
-        userRepository.save(user);
+        return oldUser;
     }
 }

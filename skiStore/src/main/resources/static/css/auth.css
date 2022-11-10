@@ -17,12 +17,12 @@ body{
 .input-field{
     background-color: #fafafa;
     margin-bottom: 8px;
-    width: 250px;
+    width: 320px;
     height: 40px;
     padding-left: 15px;
     border-radius: var(--border-radius-buttons);
     border: 1px solid #6f8ec2;
-    font-size: 20px;
+    font-size: 18px;
     color: var(--dark-blue-color);
 }
 
@@ -80,7 +80,7 @@ textarea:focus, input:focus{
     background-color: var(--light-blue-color);
     width: 250px;
     border-radius: var(--border-radius-buttons);
-    margin-top: 40px;
+    margin-top: 10px;
     border-style: none;
     box-sizing: border-box;
     color: var(--blue-color-2);
