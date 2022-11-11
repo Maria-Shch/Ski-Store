@@ -57,6 +57,10 @@ public class User {
     @ToString.Exclude
     private List<Cart> carts = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @ToString.Exclude
+    private List<Transaction> transactions = new ArrayList<>();
+
     //todo city
     public User(String name, String lastname, String username, String phoneNumber, String password) {
         this.name = name;

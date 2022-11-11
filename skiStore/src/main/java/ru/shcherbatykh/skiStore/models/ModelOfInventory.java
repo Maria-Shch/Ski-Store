@@ -66,7 +66,7 @@ public class ModelOfInventory {
 
     @PostLoad
     public void init() {
-        discountPrice = CommonUtils.calculationPrice(price, discount);
+        discountPrice = CommonUtils.calculationPrice(price, discount, 1);
         priceForPrint = CommonUtils.decorationPrice(price);
         discountPriceForPrint = CommonUtils.decorationPrice(discountPrice);
     }

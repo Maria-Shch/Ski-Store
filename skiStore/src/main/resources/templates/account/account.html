@@ -1,0 +1,32 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Личный кабинет</title>
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/account.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
+        <div class="d-container">
+            <div class="d-title-account">
+                <p class="p-account">Личный кабинет</p>
+            </div>
+            <div class="d-purchase-history">
+                <div class="d-purchase-history-title">
+                    <p class="p-purchase-history-title">История покупок</p>
+                </div>
+                <div th:if="${aggregationTransactionPrices.size() == 0}" class="d-purchase-history-empty">
+                    <p class="p-empty-purchase-history">Вы ещё не совершали покупок</p>
+                </div>
+                <div th:each="aggregationTransactionPrice : *{aggregationTransactionPrices}"  class="d-purchase-history-record">
+                    <a th:href="@{/account/transaction/{transactionId}(transactionId=${aggregationTransactionPrice.transaction.id})}"
+                       th:text="'Покупка от ' + ${aggregationTransactionPrice.dateForPrint}
+                                + ' на сумму ' + ${aggregationTransactionPrice.resultPriceForPrint} + ' ₽'"
+                    class="a-purchase-history-record-text"></a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -12,7 +12,7 @@ import ru.shcherbatykh.skiStore.classes.CartResponse;
 import ru.shcherbatykh.skiStore.classes.PaymentResponse;
 import ru.shcherbatykh.skiStore.services.CartService;
 import ru.shcherbatykh.skiStore.services.CityService;
-import ru.shcherbatykh.skiStore.services.SaleService;
+import ru.shcherbatykh.skiStore.services.TransactionService;
 import ru.shcherbatykh.skiStore.services.UserService;
 
 import static ru.shcherbatykh.skiStore.utils.CommonUtils.decorationPrice;
@@ -24,13 +24,13 @@ public class PaymentController {
     private final UserService userService;
     private final CityService cityService;
     private final CartService cartService;
-    private final SaleService saleService;
+    private final TransactionService transactionService;
 
-    public PaymentController(UserService userService, CityService cityService, CartService cartService, SaleService saleService) {
+    public PaymentController(UserService userService, CityService cityService, CartService cartService, TransactionService transactionService) {
         this.userService = userService;
         this.cityService = cityService;
         this.cartService = cartService;
-        this.saleService = saleService;
+        this.transactionService = transactionService;
     }
 
     @PostMapping
@@ -52,7 +52,7 @@ public class PaymentController {
     @PostMapping("/confirm")
     public String getConfirmPaymentPage(Model model, @AuthenticationPrincipal UserDetails userDetails,
                                         @ModelAttribute("paymentResponse") PaymentResponse paymentResponse) {
-        saleService.submitOrder(paymentResponse);
+        transactionService.submitOrder(paymentResponse);
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("paymentResponse", paymentResponse);
         return "payment/confirm";
