@@ -1,0 +1,32 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Транзакция</title>
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/transaction.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/price.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/inventoryCardInCart.css}" rel="stylesheet">
+    </head>
+        <body>
+        <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
+        <div class="d-container">
+            <div class="d-title-transaction">
+                <p th:text="'Транзакция №' + ${aggregationTransactionPrice.transaction.id}" class="p-title-transaction"></p>
+            </div>
+            <div class="d-info-transaction">
+                <p th:text="'Дата и время: ' + ${aggregationTransactionPrice.dateForPrint}" class="p-description"></p>
+                <p th:text="'Сумма: ' + ${aggregationTransactionPrice.resultPriceForPrint} + ' ₽'" class="p-description"></p>
+            </div>
+            <div class="d-purchased-inventory">
+                <div class="d-info">
+                    <p class="p-purchased-inventory">Купленные товары:</p>
+                </div>
+                <div th:each="cartElement: *{purchasedCartItems}" class="d-cart-element">
+                    <div th:replace="~{fragments/inventoryCardInCart :: fragment-inventoryCardInCart (${cartElement}, ${false})}"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

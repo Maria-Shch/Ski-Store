@@ -1,6 +1,5 @@
 package ru.shcherbatykh.skiStore.classes;
 
-
 import lombok.Getter;
 import ru.shcherbatykh.skiStore.models.Transaction;
 import ru.shcherbatykh.skiStore.utils.CommonUtils;

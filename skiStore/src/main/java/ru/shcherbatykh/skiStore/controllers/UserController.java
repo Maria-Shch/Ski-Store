@@ -26,13 +26,8 @@ public class UserController {
 
     @GetMapping
     public String getAccountPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-
         List<AggregationTransactionPrice> aggregationTransactionPrices
-                = transactionService.getAggregationTransactionPrice(userService.getUserByUserDetails(userDetails));
-
-        //получить  все транзакции этого пользователя
-        //получить общую сумму по каждой транзакции
-        //объединить дату транзакции и сумму
+                = transactionService.getAggregationTransactionPrices(userService.getUserByUserDetails(userDetails));
         model.addAttribute("aggregationTransactionPrices", aggregationTransactionPrices);
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         return "account/account";

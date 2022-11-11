@@ -21,7 +21,7 @@
                     <p class="p-empty-purchase-history">Вы ещё не совершали покупок</p>
                 </div>
                 <div th:each="aggregationTransactionPrice : *{aggregationTransactionPrices}"  class="d-purchase-history-record">
-                    <a th:href="@{/account/transaction/{transactionId}(transactionId=${aggregationTransactionPrice.transaction.id})}"
+                    <a th:href="@{/transaction/{transactionId}(transactionId=${aggregationTransactionPrice.transaction.id})}"
                        th:text="'Покупка от ' + ${aggregationTransactionPrice.dateForPrint}
                                 + ' на сумму ' + ${aggregationTransactionPrice.resultPriceForPrint} + ' ₽'"
                     class="a-purchase-history-record-text"></a>

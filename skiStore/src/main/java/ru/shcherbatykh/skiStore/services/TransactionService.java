@@ -36,6 +36,11 @@ public class TransactionService {
     }
 
     @Transactional
+    public Transaction getTransactionById(long id) {
+        return transactionRepository.findById(id).orElse(null);
+    }
+
+    @Transactional
     public void submitOrder(PaymentResponse paymentResponse) {
         userService.updateUserPersonalData(paymentResponse.getUser());
         Transaction transaction = addTransaction(new Transaction(paymentResponse.getUser()));
@@ -53,11 +58,23 @@ public class TransactionService {
     }
 
     @Transactional
-    public List<AggregationTransactionPrice> getAggregationTransactionPrice(User user){
+    public List<AggregationTransactionPrice> getAggregationTransactionPrices(User user){
         List<Transaction> transactions = user.getTransactions();
         return transactions.stream()
                 .map(t -> new AggregationTransactionPrice(t, saleService.getResultPriceByTransaction(t)))
                 .sorted(Comparator.comparing(AggregationTransactionPrice::getTransaction, Comparator.comparing(Transaction::getTime)).reversed())
+                .toList();
+    }
+
+    @Transactional
+    public AggregationTransactionPrice getAggregationTransactionPrice(Transaction transaction){
+        return new AggregationTransactionPrice(transaction, saleService.getResultPriceByTransaction(transaction));
+    }
+
+    @Transactional
+    public List<CartElement> getPurchasedCartElements(Transaction transaction){
+        return  transaction.getSales().stream()
+                .map(s -> new CartElement(null, s.getInventory().getModelOfInventory(), false))
                 .toList();
     }
 }
