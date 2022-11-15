@@ -6,7 +6,7 @@
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .d-title-account{
@@ -84,4 +84,92 @@
     color: var(--dark-blue-color-active);
     margin: 10px 0 10px 0;
     font-weight: 500;
+}
+
+.d-personal-data{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.form-personal-data{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.d-input-row{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.d-input-column{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.d-button{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.b-confirm-changes{
+    background-color: var(--blue-color-1);
+    width: 140px;
+    border-radius: var(--border-radius-buttons);
+    margin-top: 10px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 17px;
+    font-weight: bold;
+    height: 29px;
+    list-style: none;
+    outline: none;
+    padding: 3px 8px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.input-field{
+    background-color: #fafafa;
+    margin-bottom: 8px;
+    width: 400px;
+    height: 40px;
+    padding-left: 15px;
+    border-radius: var(--border-radius-buttons);
+    border: 1px solid #6f8ec2;
+    font-size: 20px;
+    color: var(--dark-blue-color-active);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+textarea:focus, input:focus{
+    outline: none;
+}
+
+::-webkit-input-placeholder {
+    font-size: 18px;
+    color: var(--light-blue-color-active);
 }

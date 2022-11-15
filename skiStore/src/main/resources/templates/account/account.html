@@ -8,10 +8,36 @@
         <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
     </head>
     <body>
-        <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
+        <div th:replace="~{fragments/header :: fragment-header (${user.role})}"></div>
         <div class="d-container">
             <div class="d-title-account">
                 <p class="p-account">Личный кабинет</p>
+            </div>
+            <div class="d-personal-data">
+                <form class="form-personal-data"  method="post" th:action="@{/account/update}" th:object="${user}">
+                    <div class="d-input-row">
+                        <div class="d-input-column">
+                            <input type="hidden" th:field="*{id}" th:value="*{id}">
+                            <input class="input-field" type="text" th:field="*{lastname}" placeholder="Фамилия" required>
+                            <input class="input-field" type="text" th:field="*{name}" placeholder="Имя" required>
+                            <input class="input-field" type="text" th:field="*{patronymic}" placeholder="Отчество">
+                            <input class="input-field" type="email" th:field="*{username}" placeholder="Электронная почта" required>
+                            <input class="input-field" type="tel" th:field="*{phoneNumber}" placeholder="+7-(_ _ _)" required>
+                        </div>
+                        <div class="d-input-column">
+                            <select class="input-field" th:field="*{city}">
+                                <option th:value=${user.city.id} th:text="${user.city.name}"></option>
+                                <option th:each="city : ${cities}" th:value=${city.id} th:text="${city.name}"></option>
+                            </select>
+                            <input class="input-field" type="text" th:field="*{streetName}" placeholder="Улица" >
+                            <input class="input-field" type="text" th:field="*{houseNumber}" placeholder="Номер дома" >
+                            <input class="input-field" type="number" th:field="*{flatNumber}" placeholder="Номер квартиры" >
+                        </div>
+                    </div>
+                    <div class="d-button">
+                        <button class="b-confirm-changes" type="submit">Изменить</button>
+                    </div>
+                </form>
             </div>
             <div class="d-purchase-history">
                 <div class="d-purchase-history-title">

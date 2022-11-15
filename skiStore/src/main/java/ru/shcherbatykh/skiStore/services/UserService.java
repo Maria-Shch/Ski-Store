@@ -1,6 +1,9 @@
 package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,7 @@ import ru.shcherbatykh.skiStore.classes.Role;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -83,5 +87,22 @@ public class UserService {
         userRepository.save(oldUser);
 
         return oldUser;
+    }
+
+    public User updateUserPersonalDataWithUsername(User newUser) {
+        User userWithOldUsername = updateUserPersonalData(newUser);
+        if(!Objects.equals(userWithOldUsername.getUsername(), newUser.getUsername())){
+            List<SimpleGrantedAuthority> nowAuthorities =
+                    (List<SimpleGrantedAuthority>) SecurityContextHolder.getContext()
+                            .getAuthentication()
+                            .getAuthorities();
+            UsernamePasswordAuthenticationToken authentication =
+                    new UsernamePasswordAuthenticationToken(newUser.getUsername(),
+                            userWithOldUsername.getPassword(), nowAuthorities);
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            userWithOldUsername.setUsername(newUser.getUsername());
+        }
+        return userWithOldUsername;
     }
 }
