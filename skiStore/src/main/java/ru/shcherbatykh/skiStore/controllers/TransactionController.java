@@ -30,6 +30,10 @@ public class TransactionController {
     @GetMapping("/{id}")
     public String getHistoryTransactionPage(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
         Transaction transaction = transactionService.getTransactionById(id);
+        if(transaction.getUser().getId() != userService.getUserByUserDetails(userDetails).getId()) {
+            model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+            return "error/noAccess";
+        }
         AggregationTransactionPrice aggregationTransactionPrice = transactionService.getAggregationTransactionPrice(transaction);
         List<CartElement> purchasedCartItems = transactionService.getPurchasedCartElements(transaction);
         model.addAttribute("aggregationTransactionPrice", aggregationTransactionPrice);

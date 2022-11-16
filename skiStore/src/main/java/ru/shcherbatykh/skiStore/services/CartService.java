@@ -24,6 +24,10 @@ public class CartService {
         this.inventoryAttributeValueRepository = inventoryAttributeValueRepository;
     }
 
+    public Cart getCartById(long id){
+        return cartRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public List<Cart> getCartsByUser(User user) {
         return cartRepository.findAllByUser(user);

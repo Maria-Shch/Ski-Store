@@ -1,0 +1,15 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ошибка</title>
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
+        <div class="d-container">
+            <p>У вас нет доступа к этой странице</p>
+        </div>
+    </body>
+</html>

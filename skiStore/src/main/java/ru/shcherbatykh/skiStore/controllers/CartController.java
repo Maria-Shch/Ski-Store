@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.shcherbatykh.skiStore.classes.CartElement;
 import ru.shcherbatykh.skiStore.classes.CartResponse;
+import ru.shcherbatykh.skiStore.models.Cart;
 import ru.shcherbatykh.skiStore.services.CartService;
 import ru.shcherbatykh.skiStore.services.UserService;
 
@@ -34,6 +35,11 @@ public class CartController {
 
     @GetMapping("/delete/{cartId}")
     public String deleteInventoryFromCart(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long cartId) {
+        Cart cart = cartService.getCartById(cartId);
+        if(cart.getUser().getId() != userService.getUserByUserDetails(userDetails).getId()) {
+            model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+            return "error/noAccess";
+        }
         cartService.deleteCartById(cartId);
         fillingModelCartPage(model, userDetails);
         return "redirect:/cart";
