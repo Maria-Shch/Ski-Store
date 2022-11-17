@@ -13,4 +13,6 @@ public class ModelOfInventoryResponse {
     private DynamicInventoryAttribute dynamicInventoryAttribute;
     private boolean isPresentDynamicInventoryAttribute;
     private boolean isPresentInStock;
+    private String newPrice;
+    private Integer newDiscount;
 }

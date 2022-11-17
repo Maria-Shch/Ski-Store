@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.shcherbatykh.skiStore.classes.AggregationTransactionPrice;
-import ru.shcherbatykh.skiStore.classes.PaymentResponse;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.services.CityService;
 import ru.shcherbatykh.skiStore.services.TransactionService;
@@ -38,8 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String updateUserPersonalData(Model model, @AuthenticationPrincipal UserDetails userDetails,
-                                         @ModelAttribute("user") User user) {
+    public String updateUserPersonalData(Model model, @ModelAttribute("user") User user) {
         User updatedUser = userService.updateUserPersonalDataWithUsername(user);
         fillingModelForAccountPage(model, updatedUser);
         return "account/account";

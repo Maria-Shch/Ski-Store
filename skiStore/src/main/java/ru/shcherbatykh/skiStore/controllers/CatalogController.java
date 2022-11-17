@@ -1,5 +1,6 @@
 package ru.shcherbatykh.skiStore.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import ru.shcherbatykh.skiStore.services.*;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/catalog")
@@ -107,9 +109,23 @@ public class CatalogController {
                 .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(modelOfInventory))
                 .isPresentDynamicInventoryAttribute(dynamicInventoryAttributeByModel != null)
                 .dynamicInventoryAttribute(dynamicInventoryAttributeByModel)
+                .newPrice(String.valueOf(modelOfInventory.getPrice()))  // The old values of a price and a discount are passed through
+                .newDiscount(modelOfInventory.getDiscount())            // the ModelOfInventoryResponse for displaying current values in the inputs
                 .build();
 
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("modelOfInventoryResponse", modelOfInventoryResponse);
+    }
+
+    @PostMapping("/update/{modelId}/{field}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String updatePriceOrDiscount(Model model, @AuthenticationPrincipal UserDetails userDetails,
+                                        @PathVariable String field, @PathVariable long modelId,
+                                        @ModelAttribute("newPrice") String newPrice, @ModelAttribute("newDiscount") String newDiscount) {
+        ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
+        if (Objects.equals(field, "price")) modelOfInventoryService.updatePrice(modelId, newPrice);
+        else modelOfInventoryService.updateDiscount(modelId, newDiscount);
+        fillingModelForModelPage(model, userDetails, modelId);
+        return String.format("redirect:/catalog/%s/%d", modelOfInventory.getModelType().getNameEnglish(), modelId);
     }
 }

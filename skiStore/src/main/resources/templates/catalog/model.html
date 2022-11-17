@@ -63,6 +63,27 @@
             <div class="d-description">
                 <p th:text="${modelOfInventoryResponse.modelOfInventory.description}" class="p-description">
             </div>
+            <hr class="hr-description">
+            <div th:if="${role.name() == 'ADMIN'}" class="d-admin-editing-block">
+                <div class="d-admin-editing-block-price">
+                    <form class="form-editing"  method="post"
+                          th:action="@{/catalog/update/{modelId}/price (modelId=${modelOfInventoryResponse.modelOfInventory.id})}"
+                          th:object="${modelOfInventoryResponse}">
+                        <p class="p-parameter-edition">Цена:</p>
+                        <input class="input-field-price" type="number" th:field="*{newPrice}" placeholder="Цена" min="1" step=".01" required>
+                        <p class="p-parameter-edition-tail">руб.</p>
+                        <button class="b-update" type="submit">Изменить</button>
+                    </form>
+                    <form class="form-editing"  method="post"
+                          th:action="@{/catalog/update/{modelId}/discount (modelId=${modelOfInventoryResponse.modelOfInventory.id})}"
+                          th:object="${modelOfInventoryResponse}">
+                        <p class="p-parameter-edition">Скидка:</p>
+                        <input class="input-field-price" type="number" th:field="*{newDiscount}" placeholder="Скидка" min="1" max="100" step="1" required>
+                        <p class="p-parameter-edition-tail">%</p>
+                        <button class="b-update" type="submit">Изменить</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </body>
 </html>

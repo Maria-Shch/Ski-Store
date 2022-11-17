@@ -2,7 +2,6 @@ package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.shcherbatykh.skiStore.models.AvailabilityStatus;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
 import ru.shcherbatykh.skiStore.repositories.ModelOfInventoryRepository;
@@ -34,23 +33,28 @@ public class ModelOfInventoryService {
     }
 
     @Transactional
-    public void updatePrice(long idModel, double newPrice) {
+    public boolean updatePrice(long idModel, String newPrice) {
         ModelOfInventory modelOfInventory = getModel(idModel);
-        modelOfInventory.setPrice(newPrice);
-        modelOfInventoryRepository.save(modelOfInventory);
+        try{
+            Double newPriceDouble = Double.valueOf(newPrice);
+            modelOfInventory.setPrice(newPriceDouble);
+            modelOfInventoryRepository.save(modelOfInventory);
+            return true;
+        }catch (ClassCastException e){
+            return false;
+        }
     }
 
     @Transactional
-    public void updateDiscount(long idModel, int newDiscount) {
+    public boolean updateDiscount(long idModel, String newDiscount) {
         ModelOfInventory modelOfInventory = getModel(idModel);
-        modelOfInventory.setDiscount(newDiscount);
-        modelOfInventoryRepository.save(modelOfInventory);
-    }
-
-    @Transactional
-    public void updateDiscount(long idModel, AvailabilityStatus newAvailabilityStatus) {
-        ModelOfInventory modelOfInventory = getModel(idModel);
-        modelOfInventory.setAvailabilityStatus(newAvailabilityStatus);
-        modelOfInventoryRepository.save(modelOfInventory);
+        try {
+            Integer newDiscountInteger = Integer.valueOf(newDiscount);
+            modelOfInventory.setDiscount(newDiscountInteger);
+            modelOfInventoryRepository.save(modelOfInventory);
+            return true;
+        } catch (ClassCastException e){
+            return false;
+        }
     }
 }

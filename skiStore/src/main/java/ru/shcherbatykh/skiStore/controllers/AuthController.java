@@ -26,11 +26,6 @@ public class AuthController {
         this.userValidator = userValidator;
     }
 
-    @GetMapping("/index")
-    public String getIndexPage() {
-        return "catalog/index";
-    }
-
     @GetMapping("/login")
     public String getLoginPage() {
         return "auth/login";
