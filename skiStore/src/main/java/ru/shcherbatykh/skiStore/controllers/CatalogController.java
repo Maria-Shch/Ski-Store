@@ -102,7 +102,6 @@ public class CatalogController {
         ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(idModel);
         DynamicInventoryAttribute DIA = inventoryService.getDynamicInventoryAttributeByModel(modelOfInventory);
 
-
         ModelOfInventoryResponse modelOfInventoryResponse = ModelOfInventoryResponse.builder()
                 .modelOfInventory(modelOfInventory)
                 .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(modelOfInventory))
@@ -116,8 +115,13 @@ public class CatalogController {
         model.addAttribute("modelOfInventoryResponse", modelOfInventoryResponse);
 
         if(userService.getRoleByUserDetails(userDetails).equals(Role.ADMIN)){
-            AdminDynamicInventoryAttribute adminDIA = inventoryService.getAdminDynamicInventoryAttributeByModel(modelOfInventory);
-            model.addAttribute("adminDynamicInventoryAttribute", adminDIA);
+            if(DIA != null){
+                AdminDynamicInventoryAttribute adminDIA = inventoryService.getAdminDynamicInventoryAttributeByModel(modelOfInventory);
+                model.addAttribute("adminDynamicInventoryAttribute", adminDIA);
+            }
+            else {
+                model.addAttribute("simpleModelQuantity", modelOfInventory.getInventories().get(0).getQuantity());
+            }
         }
     }
 
@@ -136,8 +140,13 @@ public class CatalogController {
     @PostMapping("/update/{modelId}/quantity")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String updateQuantity(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long modelId,
-                                        @ModelAttribute("adminDynamicInventoryAttribute") AdminDynamicInventoryAttribute adminDynamicInventoryAttribute) {
+                                        @ModelAttribute("adminDynamicInventoryAttribute") AdminDynamicInventoryAttribute adminDIA,
+                                        @RequestParam int simpleModelQuantity) {
         ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
+        if(adminDIA.getValues() == null){
+            inventoryService.updateQuantity(modelOfInventory, simpleModelQuantity);
+        } else inventoryService.updateQuantity(modelOfInventory, adminDIA);
+
         fillingModelForModelPage(model, userDetails, modelId);
         return String.format("redirect:/catalog/%s/%d", modelOfInventory.getModelType().getNameEnglish(), modelId);
     }

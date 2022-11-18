@@ -91,4 +91,17 @@ public class InventoryService {
         inventory.setQuantity(newQuantity);
         inventoryRepository.save(inventory);
     }
+
+    @Transactional
+    public void updateQuantity(ModelOfInventory model, AdminDynamicInventoryAttribute aDIA) {
+        for(Value value: aDIA.getValues().keySet()){
+            Inventory inventory = getInventoryByModelAndValue(model, value);
+            inventory.setQuantity(aDIA.getValues().get(value));
+        }
+    }
+
+    @Transactional
+    public void updateQuantity(ModelOfInventory model, int quantity) {
+        model.getInventories().forEach(x-> x.setQuantity(quantity));
+    }
 }
