@@ -82,7 +82,23 @@
                         <p class="p-parameter-edition-tail">%</p>
                         <button class="b-update" type="submit">Изменить</button>
                     </form>
-                </div>
+               </div>
+               <div class="d-block-editing-quantity">
+                  <div class="d-header-block-quantity">
+                      <p th:text="${adminDynamicInventoryAttribute.attribute.name}" class="p-param-quantity-title"></p>
+                      <p class="p-param-quantity-title">Количество</p>
+                  </div>
+                  <form class="form-quantity"  method="post"
+                        th:action="@{/catalog/update/{modelId}/quantity (modelId=${modelOfInventoryResponse.modelOfInventory.id})}"
+                        th:object="${adminDynamicInventoryAttribute}">
+                      <input type="hidden" th:field="*{attribute}"/>
+                      <div th:each="entry : *{values}" class="d-row-quantity">
+                          <label class="p-param-quantity" th:text="${entry.key.name} + ' ' + ${adminDynamicInventoryAttribute.unitOfMeasure.name}"></label>
+                          <input class="input-field-quantity" type="number" th:field="*{values[__${entry.key.id}__]}" placeholder="Количество" min="0" step="1" required>
+                      </div>
+                      <button class="b-update-quantity" type="submit">Обновить</button>
+                  </form>
+               </div>
             </div>
         </div>
     </body>

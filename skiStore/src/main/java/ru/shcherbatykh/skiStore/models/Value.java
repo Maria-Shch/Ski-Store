@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import ru.shcherbatykh.skiStore.classes.Filterable;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -23,4 +24,17 @@ public class Value implements Filterable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attribute_id")
     private Attribute attribute;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Value value = (Value) o;
+        return id == value.id && Objects.equals(name, value.name) && Objects.equals(attribute, value.attribute);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, attribute);
+    }
 }

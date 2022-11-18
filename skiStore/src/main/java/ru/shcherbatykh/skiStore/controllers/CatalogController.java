@@ -5,11 +5,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.shcherbatykh.skiStore.classes.CategoryResponse;
-import ru.shcherbatykh.skiStore.classes.DynamicInventoryAttribute;
-import ru.shcherbatykh.skiStore.classes.Filter;
-import ru.shcherbatykh.skiStore.classes.ModelOfInventoryResponse;
+import ru.shcherbatykh.skiStore.classes.*;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
 import ru.shcherbatykh.skiStore.models.User;
@@ -102,19 +100,25 @@ public class CatalogController {
 
     private void fillingModelForModelPage(Model model, UserDetails userDetails, long idModel){
         ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(idModel);
-        DynamicInventoryAttribute dynamicInventoryAttributeByModel = inventoryService.getDynamicInventoryAttributeByModel(modelOfInventory);
+        DynamicInventoryAttribute DIA = inventoryService.getDynamicInventoryAttributeByModel(modelOfInventory);
+
 
         ModelOfInventoryResponse modelOfInventoryResponse = ModelOfInventoryResponse.builder()
                 .modelOfInventory(modelOfInventory)
                 .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(modelOfInventory))
-                .isPresentDynamicInventoryAttribute(dynamicInventoryAttributeByModel != null)
-                .dynamicInventoryAttribute(dynamicInventoryAttributeByModel)
+                .isPresentDynamicInventoryAttribute(DIA != null)
+                .dynamicInventoryAttribute(DIA)
                 .newPrice(String.valueOf(modelOfInventory.getPrice()))  // The old values of a price and a discount are passed through
                 .newDiscount(modelOfInventory.getDiscount())            // the ModelOfInventoryResponse for displaying current values in the inputs
                 .build();
 
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
         model.addAttribute("modelOfInventoryResponse", modelOfInventoryResponse);
+
+        if(userService.getRoleByUserDetails(userDetails).equals(Role.ADMIN)){
+            AdminDynamicInventoryAttribute adminDIA = inventoryService.getAdminDynamicInventoryAttributeByModel(modelOfInventory);
+            model.addAttribute("adminDynamicInventoryAttribute", adminDIA);
+        }
     }
 
     @PostMapping("/update/{modelId}/{field}")
@@ -125,6 +129,15 @@ public class CatalogController {
         ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
         if (Objects.equals(field, "price")) modelOfInventoryService.updatePrice(modelId, newPrice);
         else modelOfInventoryService.updateDiscount(modelId, newDiscount);
+        fillingModelForModelPage(model, userDetails, modelId);
+        return String.format("redirect:/catalog/%s/%d", modelOfInventory.getModelType().getNameEnglish(), modelId);
+    }
+
+    @PostMapping("/update/{modelId}/quantity")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String updateQuantity(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long modelId,
+                                        @ModelAttribute("adminDynamicInventoryAttribute") AdminDynamicInventoryAttribute adminDynamicInventoryAttribute) {
+        ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
         fillingModelForModelPage(model, userDetails, modelId);
         return String.format("redirect:/catalog/%s/%d", modelOfInventory.getModelType().getNameEnglish(), modelId);
     }

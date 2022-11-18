@@ -27,4 +27,6 @@ public interface InventoryRepository extends CrudRepository<Inventory, Long> {
             nativeQuery = true)
     Inventory getInventoryByModelOfInventoryAndValue(@Param("modelId") long modelId,
                                                      @Param("valueId") long valueId);
+
+    List<Inventory> findAllByModelOfInventory(ModelOfInventory modelOfInventory);
 }

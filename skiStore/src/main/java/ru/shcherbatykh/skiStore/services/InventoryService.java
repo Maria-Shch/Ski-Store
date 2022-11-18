@@ -2,6 +2,7 @@ package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.shcherbatykh.skiStore.classes.AdminDynamicInventoryAttribute;
 import ru.shcherbatykh.skiStore.classes.DynamicInventoryAttribute;
 import ru.shcherbatykh.skiStore.models.Inventory;
 import ru.shcherbatykh.skiStore.models.InventoryAttributeValue;
@@ -9,9 +10,7 @@ import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.Value;
 import ru.shcherbatykh.skiStore.repositories.InventoryRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class InventoryService {
@@ -22,13 +21,14 @@ public class InventoryService {
         this.inventoryRepository = inventoryRepository;
     }
 
+    //todo duplicate code
     public DynamicInventoryAttribute getDynamicInventoryAttributeByModel(ModelOfInventory model){
         List<Inventory> presentInventoriesByModel = getPresentInventoriesByModel(model);
         if(presentInventoriesByModel.isEmpty()) return null;
 
         List<InventoryAttributeValue> inventoryAttributeValues = new ArrayList<>();
 
-        for(Inventory inventory : getPresentInventoriesByModel(model)){
+        for(Inventory inventory : presentInventoriesByModel){
             inventoryAttributeValues.addAll(inventory.getValuesOfInventoryAttribute());
         }
 
@@ -43,6 +43,27 @@ public class InventoryService {
                 .toList());
         dynamicInventoryAttribute.setUnitOfMeasure(inventoryAttributeValues.get(0).getAttribute().getUnitOfMeasure());
         return dynamicInventoryAttribute;
+    }
+
+    public AdminDynamicInventoryAttribute getAdminDynamicInventoryAttributeByModel(ModelOfInventory model){
+        List<InventoryAttributeValue> inventoryAttributeValues = new ArrayList<>();
+
+        for(Inventory inventory : model.getInventories()){
+            inventoryAttributeValues.addAll(inventory.getValuesOfInventoryAttribute());
+        }
+
+        if(inventoryAttributeValues.isEmpty()) return null;
+
+        AdminDynamicInventoryAttribute adminDIA = new AdminDynamicInventoryAttribute();
+
+        adminDIA.setAttribute(inventoryAttributeValues.get(0).getAttribute());
+        Map<Value, Integer> values = new TreeMap<>(Comparator.comparing(Value::getName));
+        for(InventoryAttributeValue inventoryAttributeValue: inventoryAttributeValues){
+            values.put(inventoryAttributeValue.getValue(), inventoryAttributeValue.getInventory().getQuantity());
+        }
+        adminDIA.setValues(values);
+        adminDIA.setUnitOfMeasure(inventoryAttributeValues.get(0).getAttribute().getUnitOfMeasure());
+        return adminDIA;
     }
 
     @Transactional
