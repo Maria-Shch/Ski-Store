@@ -1,0 +1,16 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+<div th:fragment="fragment-purchaseHistory (aggregationTransactionPrices)" class="d-purchase-history">
+    <div class="d-purchase-history-title">
+        <p class="p-purchase-history-title">История покупок</p>
+    </div>
+    <div th:if="${aggregationTransactionPrices.size() == 0}" class="d-purchase-history-empty">
+        <p class="p-empty-purchase-history">История покупок отсутствует</p>
+    </div>
+    <div th:each="aggregationTransactionPrice : *{aggregationTransactionPrices}"  class="d-purchase-history-record">
+        <a th:href="@{/transaction/{transactionId}(transactionId=${aggregationTransactionPrice.transaction.id})}"
+           th:text="'Покупка от ' + ${aggregationTransactionPrice.dateForPrint}
+                                + ' на сумму ' + ${aggregationTransactionPrice.resultPriceForPrint} + ' ₽'"
+           class="a-purchase-history-record-text"></a>
+    </div>
+</div>

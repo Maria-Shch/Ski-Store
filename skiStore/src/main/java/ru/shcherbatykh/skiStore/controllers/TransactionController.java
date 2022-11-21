@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.shcherbatykh.skiStore.classes.AggregationTransactionPrice;
 import ru.shcherbatykh.skiStore.classes.CartElement;
+import ru.shcherbatykh.skiStore.classes.Role;
 import ru.shcherbatykh.skiStore.models.Transaction;
+import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.services.TransactionService;
 import ru.shcherbatykh.skiStore.services.UserService;
 
@@ -30,15 +32,16 @@ public class TransactionController {
     @GetMapping("/{id}")
     public String getHistoryTransactionPage(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
         Transaction transaction = transactionService.getTransactionById(id);
-        if(transaction.getUser().getId() != userService.getUserByUserDetails(userDetails).getId()) {
-            model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+        User user = userService.getUserByUserDetails(userDetails);
+        if(transaction.getUser().getId() != user.getId() && !user.getRole().equals(Role.ADMIN)) {
+            model.addAttribute("role", user.getRole());
             return "error/noAccess";
         }
         AggregationTransactionPrice aggregationTransactionPrice = transactionService.getAggregationTransactionPrice(transaction);
         List<CartElement> purchasedCartItems = transactionService.getPurchasedCartElements(transaction);
         model.addAttribute("aggregationTransactionPrice", aggregationTransactionPrice);
         model.addAttribute("purchasedCartItems", purchasedCartItems);
-        model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+        model.addAttribute("role", user.getRole());
         return "transaction/transaction";
     }
 }

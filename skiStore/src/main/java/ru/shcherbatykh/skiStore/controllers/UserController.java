@@ -1,13 +1,11 @@
 package ru.shcherbatykh.skiStore.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.shcherbatykh.skiStore.classes.AggregationTransactionPrice;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.services.CityService;
@@ -17,7 +15,6 @@ import ru.shcherbatykh.skiStore.services.UserService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/account")
 public class UserController {
 
     private final UserService userService;
@@ -30,17 +27,17 @@ public class UserController {
         this.cityService = cityService;
     }
 
-    @GetMapping
+    @GetMapping("/account")
     public String getAccountPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         fillingModelForAccountPage(model, userService.getUserByUserDetails(userDetails));
-        return "account/account";
+        return "user/account";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/account/update")
     public String updateUserPersonalData(Model model, @ModelAttribute("user") User user) {
         User updatedUser = userService.updateUserPersonalDataWithUsername(user);
         fillingModelForAccountPage(model, updatedUser);
-        return "account/account";
+        return "user/account";
     }
 
     private void fillingModelForAccountPage(Model model, User user){
@@ -49,5 +46,25 @@ public class UserController {
         model.addAttribute("aggregationTransactionPrices", aggregationTransactionPrices);
         model.addAttribute("user", user);
         model.addAttribute("cities", cityService.getCities());
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String getUsersPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("users", userService.getUsersSorted());
+        model.addAttribute("user", userService.getUserByUserDetails(userDetails));
+        return "user/allUsers";
+    }
+
+    @GetMapping("/user/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String getUserPage(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long id) {
+        User viewedUser = userService.getUser(id);
+        List<AggregationTransactionPrice> aggregationTransactionPrices
+                = transactionService.getAggregationTransactionPrices(viewedUser);
+        model.addAttribute("aggregationTransactionPrices", aggregationTransactionPrices);
+        model.addAttribute("user", userService.getUserByUserDetails(userDetails));
+        model.addAttribute("viewedUser", viewedUser);
+        return "user/userAccountForAdmin";
     }
 }

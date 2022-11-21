@@ -6,6 +6,7 @@
         <link th:href="@{/css/root.css}" rel="stylesheet">
         <link th:href="@{/css/account.css}" rel="stylesheet">
         <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/purchaseHistory.css}" rel="stylesheet">
     </head>
     <body>
         <div th:replace="~{fragments/header :: fragment-header (${user.role})}"></div>
@@ -39,20 +40,7 @@
                     </div>
                 </form>
             </div>
-            <div class="d-purchase-history">
-                <div class="d-purchase-history-title">
-                    <p class="p-purchase-history-title">История покупок</p>
-                </div>
-                <div th:if="${aggregationTransactionPrices.size() == 0}" class="d-purchase-history-empty">
-                    <p class="p-empty-purchase-history">Вы ещё не совершали покупок</p>
-                </div>
-                <div th:each="aggregationTransactionPrice : *{aggregationTransactionPrices}"  class="d-purchase-history-record">
-                    <a th:href="@{/transaction/{transactionId}(transactionId=${aggregationTransactionPrice.transaction.id})}"
-                       th:text="'Покупка от ' + ${aggregationTransactionPrice.dateForPrint}
-                                + ' на сумму ' + ${aggregationTransactionPrice.resultPriceForPrint} + ' ₽'"
-                    class="a-purchase-history-record-text"></a>
-                </div>
-            </div>
+            <div th:replace="~{fragments/purchaseHistory :: fragment-purchaseHistory (${aggregationTransactionPrices})}"></div>
         </div>
     </body>
 </html>

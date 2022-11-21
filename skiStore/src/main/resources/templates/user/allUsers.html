@@ -1,0 +1,57 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Пользователи</title>
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/allUsers.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: fragment-header (${user.role})}"></div>
+        <div class="d-container">
+            <div class="d-title-users">
+                <p class="p-users">Список пользователей</p>
+            </div>
+            <div class="d-users">
+                <div class="d-user-info">
+                    <div class="d-lastname">
+                        <p class="p-h2">Фамилия</p>
+                    </div>
+                    <div class="d-name">
+                        <p class="p-h2">Имя</p>
+                    </div>
+                    <div class="d-username">
+                        <p class="p-h2">Почта</p>
+                    </div>
+                    <div class="d-city">
+                        <p class="p-h2">Город</p>
+                    </div>
+                    <div class="d-phone">
+                        <p class="p-h2">Номер телефона</p>
+                    </div>
+                </div>
+                <div th:each="user: ${users}" class="d-user">
+                    <div class="d-lastname">
+                        <p th:text="${user.lastname}" class="p-info-text"></p>
+                    </div>
+                    <div class="d-name">
+                        <p th:text="${user.name}" class="p-info-text"></p>
+                    </div>
+                    <div class="d-username">
+                        <p th:text="${user.username}" class="p-info-text"></p>
+                    </div>
+                    <div class="d-city">
+                        <p th:text="${user.city.name}" class="p-info-text"></p>
+                    </div>
+                    <div class="d-phone">
+                        <p th:text="${user.phoneNumber}" class="p-info-text"></p>
+                    </div>
+                    <div class="d-more">
+                        <a class="a-more" th:href="@{/user/{id} (id=${user.id})}">Подробнее...</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,6 +1,7 @@
 package ru.shcherbatykh.skiStore.services;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +13,7 @@ import ru.shcherbatykh.skiStore.classes.Role;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.UserRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,6 +31,17 @@ public class UserService {
     @Transactional
     public User getUser(long idUser) {
         return userRepository.getUserById(idUser);
+    }
+
+    @Transactional
+    public List<User> getUsersSorted() {
+        return userRepository.findAll(orderByLastnameNamePatronymicAsc());
+    }
+
+    private Sort orderByLastnameNamePatronymicAsc() {
+        return Sort.by(Sort.Direction.ASC, "lastname")
+                .and(Sort.by(Sort.Direction.ASC, "name"))
+                .and(Sort.by(Sort.Direction.ASC, "patronymic"));
     }
 
     @Transactional

@@ -1,0 +1,73 @@
+<html lang="ru"
+xmlns:th="www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Личный кабинет</title>
+        <link th:href="@{/css/root.css}" rel="stylesheet">
+        <link th:href="@{/css/userAccountForAdmin.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+        <link th:href="@{/css/fragments/purchaseHistory.css}" rel="stylesheet">
+    </head>
+    <body>
+        <div th:replace="~{fragments/header :: fragment-header (${user.role})}"></div>
+        <div class="d-container">
+            <div class="d-title-account">
+                <p class="p-account" th:text="${viewedUser.lastname} + ' ' + ${viewedUser.name} + ' (id ' + ${viewedUser.id} + ')'"></p>
+            </div>
+            <div class="d-personal-data">
+                <div class="d-row">
+                    <div class="d-column">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Фамилия:</p>
+                            <p class="p-parameter" th:text="${viewedUser.lastname}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Имя:</p>
+                            <p class="p-parameter" th:text="${viewedUser.name}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Отчество:</p>
+                            <p class="p-parameter" th:text="${viewedUser.patronymic}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Почта:</p>
+                            <p class="p-parameter" th:text="${viewedUser.username}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Телефон:</p>
+                            <p class="p-parameter" th:text="${viewedUser.phoneNumber}">
+                        </div>
+                        <hr class="hr-parameter">
+                    </div>
+                    <div class="d-column">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Город:</p>
+                            <p class="p-parameter" th:text="${viewedUser.city.name}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Улица:</p>
+                            <p class="p-parameter" th:text="${viewedUser.streetName}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Дом:</p>
+                            <p class="p-parameter" th:text="${viewedUser.houseNumber}">
+                        </div>
+                        <hr class="hr-parameter">
+                        <div class="d-parameter-row">
+                            <p class="p-parameter">Квартира:</p>
+                            <p class="p-parameter" th:text="${viewedUser.flatNumber}">
+                        </div>
+                        <hr class="hr-parameter">
+                    </div>
+                </div>
+            </div>
+            <div th:replace="~{fragments/purchaseHistory :: fragment-purchaseHistory (${aggregationTransactionPrices})}"></div>
+        </div>
+    </body>
+</html>
