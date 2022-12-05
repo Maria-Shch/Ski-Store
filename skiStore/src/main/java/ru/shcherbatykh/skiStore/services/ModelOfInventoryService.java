@@ -1,12 +1,17 @@
 package ru.shcherbatykh.skiStore.services;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.shcherbatykh.skiStore.models.ModelOfInventory;
-import ru.shcherbatykh.skiStore.models.ModelType;
+import org.springframework.util.CollectionUtils;
+import ru.shcherbatykh.skiStore.classes.ReceivedFilter;
+import ru.shcherbatykh.skiStore.models.*;
 import ru.shcherbatykh.skiStore.repositories.ModelOfInventoryRepository;
 
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ModelOfInventoryService {
@@ -56,5 +61,111 @@ public class ModelOfInventoryService {
         } catch (ClassCastException e){
             return false;
         }
+    }
+
+    public List<ModelOfInventory> filtration(ReceivedFilter receivedFilter) {
+
+        Specification<ModelOfInventory> specification = hasModelType(receivedFilter.getModelType());
+
+        if (receivedFilter.getStartPrice() != null) {
+            specification = specification.and(hasStartPrice(Double.valueOf(receivedFilter.getStartPrice())));
+        }
+        if (receivedFilter.getEndPrice() != null) {
+            specification = specification.and(hasEndPrice(Double.valueOf(receivedFilter.getEndPrice())));
+        }
+
+        if (!CollectionUtils.isEmpty(receivedFilter.getBrandIds())) {
+            specification = specification.and(hasBrands(receivedFilter.getBrandIds()));
+        }
+        if (!CollectionUtils.isEmpty(receivedFilter.getYearIds())) {
+            specification = specification.and(hasYears(receivedFilter.getYearIds()));
+        }
+
+        if (!receivedFilter.getAttributes().isEmpty()) {
+            for (Map.Entry<Attribute, List<Long>> entry : receivedFilter.getAttributes().entrySet()) {
+                if (entry.getKey().isDynamic()) {
+                    specification = specification.and(hasDynamicAttributeValues(entry.getKey().getId(), entry.getValue()));
+                } else {
+                    specification = specification.and(hasStaticAttributeValues(entry.getKey().getId(), entry.getValue()));
+                }
+            }
+        }
+        return modelOfInventoryRepository.findAll(specification);
+    }
+
+    private Specification<ModelOfInventory> hasModelType(Long modelTypeId) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.<ModelType>get("modelType"), modelTypeId);
+    }
+
+    private Specification<ModelOfInventory> hasBrands(List<Long> brandIds) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> brandPredicates = new ArrayList<>();
+            Path<Brand> brand = root.get("brand");
+            for (Long brandId : brandIds) {
+                brandPredicates.add(criteriaBuilder.equal(brand, brandId));
+            }
+            return criteriaBuilder.or(brandPredicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private Specification<ModelOfInventory> hasYears(List<Long> yearIds) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> yearPredicates = new ArrayList<>();
+            Path<Brand> year = root.get("year");
+            for (Long yearId : yearIds) {
+                yearPredicates.add(criteriaBuilder.equal(year, yearId));
+            }
+            return criteriaBuilder.or(yearPredicates.toArray(new Predicate[0]));
+        };
+    }
+
+    private Specification<ModelOfInventory> hasStartPrice(Double startPrice) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(
+                getResultPriceExpression(root, criteriaBuilder), startPrice);
+    }
+
+    private Specification<ModelOfInventory> hasEndPrice(Double endPrice) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(
+                getResultPriceExpression(root, criteriaBuilder), endPrice);
+    }
+
+    private Expression<Double> getResultPriceExpression(Root<ModelOfInventory> root, CriteriaBuilder criteriaBuilder) {
+        Path<Double> price = root.get("price");
+        Path<Integer> discountPercent = root.get("discount");
+        Expression<Double> discount = criteriaBuilder.toDouble(criteriaBuilder.quot(
+                criteriaBuilder.prod(price, discountPercent), 100));
+        return criteriaBuilder.diff(price, discount);
+    }
+
+    private Specification<ModelOfInventory> hasStaticAttributeValues(Long attrId, List<Long> listValueIds) {
+        return (root, query, criteriaBuilder) -> {
+            Join<ModelAttributeValue, ModelOfInventory> modelAttrValue = root.join("valuesOfModelAttribute");
+            return hasAttributeValues(modelAttrValue, attrId, listValueIds, criteriaBuilder);
+        };
+    }
+
+    private Specification<ModelOfInventory> hasDynamicAttributeValues(Long attrId, List<Long> listValueIds) {
+        return (root, query, criteriaBuilder) -> {
+
+            Join<Inventory, ModelOfInventory> inventories = root.join("inventories");
+            Join<InventoryAttributeValue, Inventory> inventoryAttrValue = inventories.join("valuesOfInventoryAttribute");
+
+            return hasAttributeValues(inventoryAttrValue, attrId, listValueIds, criteriaBuilder);
+        };
+    }
+
+    private Predicate hasAttributeValues(Join<?, ?> attributeValue,
+                                         Long attrId, List<Long> listValueIds,
+                                         CriteriaBuilder criteriaBuilder) {
+        List<Predicate> valuePredicates = new ArrayList<>();
+        Path<Value> value = attributeValue.get("value");
+        for (Long listValueId : listValueIds) {
+            valuePredicates.add(criteriaBuilder.equal(value, listValueId));
+        }
+
+        Path<Attribute> attribute = attributeValue.get("attribute");
+        Predicate attributePredicate = criteriaBuilder.equal(attribute, attrId);
+        Predicate orValuePredicate = criteriaBuilder.or(valuePredicates.toArray(new Predicate[0]));
+        return criteriaBuilder.and(attributePredicate, orValuePredicate);
     }
 }

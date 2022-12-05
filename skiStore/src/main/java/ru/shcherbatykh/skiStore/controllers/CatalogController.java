@@ -62,8 +62,11 @@ public class CatalogController {
     }
 
     private void fillingModelForCategoryPage(Model model, UserDetails userDetails, String modelTypeNameEnglish, Filter filter){
+        List<ModelOfInventory> models;
         ModelType modelType = modelTypeService.getModelTypeByNameEn(modelTypeNameEnglish);
-        List<ModelOfInventory> models = modelOfInventoryService.getModelsByModelType(modelType);
+
+        if (filter != null) models = filtrationService.filtration(modelType, filter);
+        else models = modelOfInventoryService.getModelsByModelType(modelType);
 
         CategoryResponse categoryResponse = CategoryResponse.builder()
                 .modelType(modelType)

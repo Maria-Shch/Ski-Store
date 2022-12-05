@@ -1,5 +1,6 @@
 package ru.shcherbatykh.skiStore.repositories;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.shcherbatykh.skiStore.models.ModelOfInventory;
@@ -15,4 +16,6 @@ public interface ModelOfInventoryRepository extends CrudRepository<ModelOfInvent
     ModelOfInventory getModelById(long id);
 
     List<ModelOfInventory> findAllByModelType(ModelType modelType);
+
+    List<ModelOfInventory> findAll(Specification<ModelOfInventory> specification);
 }

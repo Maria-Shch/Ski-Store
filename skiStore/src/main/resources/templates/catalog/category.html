@@ -65,7 +65,10 @@
                         Сбросить
                     </a>
                 </div>
-                <div class="d-content">
+                <div th:if="${categoryResponse.modelsOfInventory.size() == 0}" class="d-content">
+                    <p class="p-filter">По вашему запросу ничего не найдено</p>
+                </div>
+                <div th:if="${categoryResponse.modelsOfInventory.size() != 0}" class="d-content">
                     <div th:each="modelOfInventory : ${categoryResponse.modelsOfInventory}" class="d-model">
                         <div class="d-image">
                             <img class="img-model"
