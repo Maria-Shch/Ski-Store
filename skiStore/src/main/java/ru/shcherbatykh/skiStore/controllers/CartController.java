@@ -60,8 +60,10 @@ public class CartController {
 
     private void fillingModelCartPage(Model model, UserDetails userDetails) {
         List<CartElement> cartElements = cartService.getCartElementsByUser(userService.getUserByUserDetails(userDetails));
+        boolean isAllAvailable = cartElements.stream().allMatch(CartElement::isEnoughInStock);
         CartResponse cartResponse = CartResponse.builder()
                 .cartElements(cartElements)
+                .isAllAvailable(isAllAvailable)
                 .build();
         model.addAttribute("cartResponse", cartResponse);
         model.addAttribute("role", userService.getRoleByUserDetails(userDetails));

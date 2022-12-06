@@ -11,4 +11,5 @@ import java.util.List;
 @Setter
 public class CartResponse {
     private List<CartElement> cartElements;
+    private Boolean isAllAvailable;
 }

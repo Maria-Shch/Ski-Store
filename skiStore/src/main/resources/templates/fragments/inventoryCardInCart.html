@@ -30,6 +30,10 @@
                     <a th:if="${isDeletable == true}" th:href="@{/cart/add/{cartId}(cartId=${cartElement.cart.id})}"
                        class="input-add"></a>
                 </div>
+                <p th:if="${cartElement.isEnoughInStock == false} and ${isDeletable == true}"
+                   th:text="'Количество товаров в вашей корзине: ' + ${cartElement.quantity} + '. К сожалению, на данный момент на складе в наличии только '
+                   + ${cartElement.quantityInStock} + '. Для перехода к оплате удалите лишние товары.'"
+                   class="p-description"></p>
             </div>
             <div th:replace="~{fragments/price :: fragment-price (${cartElement.modelOfInventory})}"></div>
         </div>

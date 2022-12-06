@@ -30,7 +30,7 @@
                         </div>
                         <div th:replace="~{fragments/inventoryCardInCart :: fragment-inventoryCardInCart (${cartElement}, ${true})}"></div>
                     </div>
-                    <button class="b-to-payment" type="submit">Перейти к оплате</button>
+                    <button th:if="${cartResponse.isAllAvailable == true}" class="b-to-payment" type="submit">Перейти к оплате</button>
                 </form>
             </div>
             <div th:if="${cartResponse.cartElements.size() == 0}" class="d-carts">

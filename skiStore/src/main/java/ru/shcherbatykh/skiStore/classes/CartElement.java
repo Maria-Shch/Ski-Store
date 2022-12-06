@@ -16,11 +16,15 @@ public class CartElement {
     private Attribute attribute;
     private Value value;
     private Boolean selected;
+    private Integer quantityInStock;
+    private boolean isEnoughInStock;
 
-    public CartElement(Cart cart, ModelOfInventory modelOfInventory, Integer quantity, Boolean selected) {
+    public CartElement(Cart cart, ModelOfInventory modelOfInventory, Integer quantity, Boolean selected, Integer quantityInStock, boolean isEnoughInStock) {
         this.cart = cart;
         this.modelOfInventory = modelOfInventory;
         this.quantity = quantity;
         this.selected = selected;
+        this.quantityInStock = quantityInStock;
+        this.isEnoughInStock = isEnoughInStock;
     }
 }

@@ -74,7 +74,7 @@ public class TransactionService {
     @Transactional
     public List<CartElement> getPurchasedCartElements(Transaction transaction){
         return  transaction.getSales().stream()
-                .map(s -> new CartElement(null, s.getInventory().getModelOfInventory(), s.getQuantity(), false))
+                .map(s -> new CartElement(null, s.getInventory().getModelOfInventory(), s.getQuantity(), false, null, true))
                 .toList();
     }
 }

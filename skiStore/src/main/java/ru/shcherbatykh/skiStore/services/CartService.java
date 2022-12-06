@@ -87,7 +87,8 @@ public class CartService {
 
         for(Cart cart : carts){
             Inventory inv = cart.getInventory();
-            CartElement ce = new CartElement(cart, inv.getModelOfInventory(), cart.getQuantity(), true);
+            boolean isEnoughInStock = inv.getQuantity() >= cart.getQuantity();
+            CartElement ce = new CartElement(cart, inv.getModelOfInventory(), cart.getQuantity(), true, inv.getQuantity(), isEnoughInStock);
             InventoryAttributeValue iav = inventoryAttributeValueRepository.getFirstByInventory(inv);
             if (iav != null){
                 ce.setAttribute(iav.getAttribute());
