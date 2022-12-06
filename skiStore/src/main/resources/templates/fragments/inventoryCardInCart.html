@@ -16,19 +16,26 @@
                             ${cartElement.modelOfInventory.brand.name} + ' ' +
                             ${cartElement.modelOfInventory.title}"
                    class="a-header"></a>
-                <p th:text="'Бренд: ' + ${cartElement.modelOfInventory.brand.name}" class="p-description">
-                <p th:text="'Год: ' + ${cartElement.modelOfInventory.year.name}" class="p-description">
+                <p th:text="'Бренд: ' + ${cartElement.modelOfInventory.brand.name}" class="p-description"></p>
+                <p th:text="'Год: ' + ${cartElement.modelOfInventory.year.name}" class="p-description"></p>
                 <p th:if="${cartElement.attribute != null}"
                    th:text="${cartElement.attribute.name} + ': ' +
                             ${cartElement.value.name} + ' ' +
                             ${cartElement.attribute.unitOfMeasure.name}"
-                   class="p-description">
+                   class="p-description"></p>
+                <div class="d-quantity">
+                    <p  th:text="'Количество: ' + ${cartElement.quantity}" class="p-description"></p>
+                    <a th:if="${isDeletable == true}" th:href="@{/cart/remove/{cartId}(cartId=${cartElement.cart.id})}"
+                       class="input-remove"></a>
+                    <a th:if="${isDeletable == true}" th:href="@{/cart/add/{cartId}(cartId=${cartElement.cart.id})}"
+                       class="input-add"></a>
+                </div>
             </div>
             <div th:replace="~{fragments/price :: fragment-price (${cartElement.modelOfInventory})}"></div>
         </div>
         <div th:if="${isDeletable == true}" class="d-delete">
-            <a th:href="@{/cart/delete/{cartId}(cartId=${cartElement.cart.id})}"
-               class="a-delete-from-cart">Удалить из корзины</a>
+            <a th:href="@{/cart/deleteAll/{cartId}(cartId=${cartElement.cart.id})}"
+               class="a-delete-from-cart">Удалить товар из корзины</a>
         </div>
     </div>
 </div>

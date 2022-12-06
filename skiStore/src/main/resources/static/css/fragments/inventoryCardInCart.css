@@ -94,3 +94,35 @@
     overflow: hidden;
     white-space: nowrap;
 }
+
+.d-quantity{
+    display: flex;
+    flex-direction: row;
+    width: 200px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-add{
+    margin: 0px;
+}
+
+.input-remove{
+    background: var(--dark-blue-color) url(../../images/icons/remove_item.png) no-repeat center;
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+}
+
+.input-add{
+    background: var(--dark-blue-color) url(../../images/icons/add_item.png) no-repeat center;
+    background-size: 30px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 15px;
+    border: none;
+}

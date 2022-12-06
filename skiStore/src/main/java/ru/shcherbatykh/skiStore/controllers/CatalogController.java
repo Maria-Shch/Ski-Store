@@ -144,7 +144,7 @@ public class CatalogController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String updateQuantity(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long modelId,
                                         @ModelAttribute("adminDynamicInventoryAttribute") AdminDynamicInventoryAttribute adminDIA,
-                                        @RequestParam int simpleModelQuantity) {
+                                        @RequestParam(required = false) Integer simpleModelQuantity) {
         ModelOfInventory modelOfInventory = modelOfInventoryService.getModel(modelId);
         if(adminDIA.getValues() == null){
             inventoryService.updateQuantity(modelOfInventory, simpleModelQuantity);

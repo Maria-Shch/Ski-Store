@@ -12,13 +12,15 @@ import ru.shcherbatykh.skiStore.models.Value;
 public class CartElement {
     private Cart cart;
     private ModelOfInventory modelOfInventory;
+    private Integer quantity;
     private Attribute attribute;
     private Value value;
     private Boolean selected;
 
-    public CartElement(Cart cart, ModelOfInventory modelOfInventory, Boolean selected) {
+    public CartElement(Cart cart, ModelOfInventory modelOfInventory, Integer quantity, Boolean selected) {
         this.cart = cart;
         this.modelOfInventory = modelOfInventory;
+        this.quantity = quantity;
         this.selected = selected;
     }
 }

@@ -22,6 +22,7 @@
                         <div class="d-input-checkbox">
                             <input type="hidden" th:field="*{cartElements[__${iterator.index}__].cart}"/>
                             <input type="hidden" th:field="*{cartElements[__${iterator.index}__].modelOfInventory}"/>
+                            <input type="hidden" th:field="*{cartElements[__${iterator.index}__].quantity}"/>
                             <input type="hidden" th:field="*{cartElements[__${iterator.index}__].attribute}"/>
                             <input type="hidden" th:field="*{cartElements[__${iterator.index}__].value}"/>
                             <input type="checkbox" name="cartElements" th:value="*{cartElements[__${iterator.index}__].cart.id}"

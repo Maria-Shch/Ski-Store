@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.shcherbatykh.skiStore.classes.CartElement;
 import ru.shcherbatykh.skiStore.classes.CartResponse;
 import ru.shcherbatykh.skiStore.classes.PaymentResponse;
-import ru.shcherbatykh.skiStore.services.CartService;
-import ru.shcherbatykh.skiStore.services.CityService;
-import ru.shcherbatykh.skiStore.services.TransactionService;
-import ru.shcherbatykh.skiStore.services.UserService;
+import ru.shcherbatykh.skiStore.services.*;
 
 import static ru.shcherbatykh.skiStore.utils.CommonUtils.decorationPrice;
 

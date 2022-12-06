@@ -33,7 +33,7 @@ public class CartController {
         return "cart/cart";
     }
 
-    @GetMapping("/delete/{cartId}")
+    @GetMapping("/deleteAll/{cartId}")
     public String deleteInventoryFromCart(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable long cartId) {
         Cart cart = cartService.getCartById(cartId);
         if(cart.getUser().getId() != userService.getUserByUserDetails(userDetails).getId()) {
@@ -41,6 +41,19 @@ public class CartController {
             return "error/noAccess";
         }
         cartService.deleteCartById(cartId);
+        fillingModelCartPage(model, userDetails);
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/{operation}/{cartId}")
+    public String incrementQuantity(Model model, @AuthenticationPrincipal UserDetails userDetails, @PathVariable String operation,
+                                    @PathVariable long cartId) {
+        Cart cart = cartService.getCartById(cartId);
+        if(cart.getUser().getId() != userService.getUserByUserDetails(userDetails).getId()) {
+            model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+            return "error/noAccess";
+        }
+        cartService.changeQuantity(cart, operation, 1);
         fillingModelCartPage(model, userDetails);
         return "redirect:/cart";
     }

@@ -3,11 +3,9 @@ package ru.shcherbatykh.skiStore.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.skiStore.classes.AdminDynamicInventoryAttribute;
+import ru.shcherbatykh.skiStore.classes.CartElement;
 import ru.shcherbatykh.skiStore.classes.DynamicInventoryAttribute;
-import ru.shcherbatykh.skiStore.models.Inventory;
-import ru.shcherbatykh.skiStore.models.InventoryAttributeValue;
-import ru.shcherbatykh.skiStore.models.ModelOfInventory;
-import ru.shcherbatykh.skiStore.models.Value;
+import ru.shcherbatykh.skiStore.models.*;
 import ru.shcherbatykh.skiStore.repositories.InventoryRepository;
 
 import java.util.*;
@@ -102,6 +100,6 @@ public class InventoryService {
 
     @Transactional
     public void updateQuantity(ModelOfInventory model, int quantity) {
-        model.getInventories().forEach(x-> x.setQuantity(quantity));
+        model.getInventories().forEach(x -> x.setQuantity(quantity));
     }
 }

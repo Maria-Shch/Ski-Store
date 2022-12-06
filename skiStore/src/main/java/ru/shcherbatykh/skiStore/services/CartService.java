@@ -10,6 +10,7 @@ import ru.shcherbatykh.skiStore.repositories.InventoryAttributeValueRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CartService {
@@ -38,16 +39,26 @@ public class CartService {
         cartRepository.save(newCart);
     }
 
+    public Cart getCartByUserAndInventory(User user, Inventory inventory) {
+        return cartRepository.getCartByUserAndInventory(user, inventory);
+    }
+
+    @Transactional
     public void addToCart(User user, ModelOfInventory modelOfInventory, Value selectedValue) {
         Inventory inventory = inventoryService.getInventoryByModelAndValue(modelOfInventory, selectedValue);
-        addCart(new Cart(null, user, inventory, 1));
+        Cart currentCart = getCartByUserAndInventory(user, inventory);
+        if(currentCart == null){
+            addCart(new Cart(null, user, inventory, 1));
+        } else {
+            addCart(new Cart(currentCart.getId(), currentCart.getUser(), currentCart.getInventory(), currentCart.getQuantity()+1));
+        }
     }
 
     //todo повторяющийся код
     public Double getResultPriceByCartResponse(CartResponse cartResponse){
         return cartResponse.getCartElements().stream()
                 .filter(CartElement::getSelected)
-                .mapToDouble(e -> e.getModelOfInventory().getPrice())
+                .mapToDouble(e -> e.getModelOfInventory().getPrice()*e.getCart().getQuantity())
                 .reduce(Double::sum)
                 .orElse(0);
     }
@@ -55,7 +66,7 @@ public class CartService {
     public Double getResultDiscountPriceByCartResponse(CartResponse cartResponse){
         return cartResponse.getCartElements().stream()
                 .filter(CartElement::getSelected)
-                .mapToDouble(e -> e.getModelOfInventory().getDiscountPrice())
+                .mapToDouble(e -> e.getModelOfInventory().getDiscountPrice()*e.getCart().getQuantity())
                 .reduce(Double::sum)
                 .orElse(0);
     }
@@ -74,9 +85,10 @@ public class CartService {
         List<Cart> carts = getCartsByUser(user);
         List<CartElement> cartElements = new ArrayList<>();
 
-        for(Cart cart: carts){
-            CartElement ce = new CartElement(cart, cart.getInventory().getModelOfInventory(), false);
-            InventoryAttributeValue iav = inventoryAttributeValueRepository.getFirstByInventory(cart.getInventory());
+        for(Cart cart : carts){
+            Inventory inv = cart.getInventory();
+            CartElement ce = new CartElement(cart, inv.getModelOfInventory(), cart.getQuantity(), true);
+            InventoryAttributeValue iav = inventoryAttributeValueRepository.getFirstByInventory(inv);
             if (iav != null){
                 ce.setAttribute(iav.getAttribute());
                 ce.setValue(iav.getValue());
@@ -85,5 +97,24 @@ public class CartService {
         }
 
         return cartElements;
+    }
+
+    public void changeQuantity(Cart cart, String operation, int quantity){
+        if (Objects.equals(operation, "remove") && cart.getQuantity() == 1){
+            deleteCart(cart);
+        }
+        else{
+            switch (operation){
+                case "add" -> incrementQuantity(cart, quantity);
+                case "remove" -> incrementQuantity(cart, -1*quantity);
+                default -> throw new IllegalStateException("Unexpected value: " + operation);
+            }
+        }
+    }
+
+    @Transactional
+    public void incrementQuantity(Cart cart, int quantity) {
+        int currQuantity = cart.getQuantity();
+        cartRepository.save(new Cart(cart.getId(), cart.getUser(), cart.getInventory(), currQuantity + quantity));
     }
 }

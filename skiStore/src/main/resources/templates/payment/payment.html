@@ -21,6 +21,7 @@
         <div th:each="cartElement, iterator: *{selectedCartElements}">
             <input type="hidden" th:field="*{selectedCartElements[__${iterator.index}__].cart}" />
             <input type="hidden" th:field="*{selectedCartElements[__${iterator.index}__].modelOfInventory}" />
+            <input type="hidden" th:field="*{selectedCartElements[__${iterator.index}__].quantity}" />
             <input type="hidden" th:field="*{selectedCartElements[__${iterator.index}__].attribute}" />
             <input type="hidden" th:field="*{selectedCartElements[__${iterator.index}__].value}" />
             <input type="hidden" th:field="*{selectedCartElements[__${iterator.index}__].selected}" />
