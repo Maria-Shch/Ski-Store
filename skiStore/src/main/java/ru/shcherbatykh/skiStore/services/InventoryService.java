@@ -6,6 +6,7 @@ import ru.shcherbatykh.skiStore.classes.AdminDynamicInventoryAttribute;
 import ru.shcherbatykh.skiStore.classes.CartElement;
 import ru.shcherbatykh.skiStore.classes.DynamicInventoryAttribute;
 import ru.shcherbatykh.skiStore.models.*;
+import ru.shcherbatykh.skiStore.repositories.InventoryAttributeValueRepository;
 import ru.shcherbatykh.skiStore.repositories.InventoryRepository;
 
 import java.util.*;
@@ -14,9 +15,11 @@ import java.util.*;
 public class InventoryService {
 
     private final InventoryRepository inventoryRepository;
+    private final InventoryAttributeValueRepository inventoryAttributeValueRepository;
 
-    public InventoryService(InventoryRepository inventoryRepository) {
+    public InventoryService(InventoryRepository inventoryRepository, InventoryAttributeValueRepository inventoryAttributeValueRepository) {
         this.inventoryRepository = inventoryRepository;
+        this.inventoryAttributeValueRepository = inventoryAttributeValueRepository;
     }
 
     //todo duplicate code
@@ -101,5 +104,14 @@ public class InventoryService {
     @Transactional
     public void updateQuantity(ModelOfInventory model, int quantity) {
         model.getInventories().forEach(x -> x.setQuantity(quantity));
+    }
+
+    public CartElement setAttributeAndValueByInventory(CartElement ce, Inventory inv){
+        InventoryAttributeValue iav = inventoryAttributeValueRepository.getFirstByInventory(inv);
+        if (iav != null){
+            ce.setAttribute(iav.getAttribute());
+            ce.setValue(iav.getValue());
+        }
+        return ce;
     }
 }

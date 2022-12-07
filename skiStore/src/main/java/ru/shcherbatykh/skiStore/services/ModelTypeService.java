@@ -1,5 +1,6 @@
 package ru.shcherbatykh.skiStore.services;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.shcherbatykh.skiStore.models.ModelType;
@@ -18,7 +19,7 @@ public class ModelTypeService {
 
     @Transactional
     public List<ModelType> getModelTypes() {
-        return modelTypeRepository.findAll();
+        return modelTypeRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     @Transactional

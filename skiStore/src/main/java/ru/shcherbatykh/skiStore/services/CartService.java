@@ -17,12 +17,10 @@ public class CartService {
 
     private final CartRepository cartRepository;
     private final InventoryService inventoryService;
-    private final InventoryAttributeValueRepository inventoryAttributeValueRepository;
 
-    public CartService(CartRepository cartRepository, InventoryService inventoryService, InventoryAttributeValueRepository inventoryAttributeValueRepository) {
+    public CartService(CartRepository cartRepository, InventoryService inventoryService) {
         this.cartRepository = cartRepository;
         this.inventoryService = inventoryService;
-        this.inventoryAttributeValueRepository = inventoryAttributeValueRepository;
     }
 
     public Cart getCartById(long id){
@@ -89,14 +87,8 @@ public class CartService {
             Inventory inv = cart.getInventory();
             boolean isEnoughInStock = inv.getQuantity() >= cart.getQuantity();
             CartElement ce = new CartElement(cart, inv.getModelOfInventory(), cart.getQuantity(), true, inv.getQuantity(), isEnoughInStock);
-            InventoryAttributeValue iav = inventoryAttributeValueRepository.getFirstByInventory(inv);
-            if (iav != null){
-                ce.setAttribute(iav.getAttribute());
-                ce.setValue(iav.getValue());
-            }
-            cartElements.add(ce);
+            cartElements.add(inventoryService.setAttributeAndValueByInventory(ce, inv));
         }
-
         return cartElements;
     }
 

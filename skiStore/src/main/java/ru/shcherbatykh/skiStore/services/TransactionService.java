@@ -10,6 +10,7 @@ import ru.shcherbatykh.skiStore.models.Transaction;
 import ru.shcherbatykh.skiStore.models.User;
 import ru.shcherbatykh.skiStore.repositories.TransactionRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -73,8 +74,12 @@ public class TransactionService {
 
     @Transactional
     public List<CartElement> getPurchasedCartElements(Transaction transaction){
-        return  transaction.getSales().stream()
-                .map(s -> new CartElement(null, s.getInventory().getModelOfInventory(), s.getQuantity(), false, null, true))
-                .toList();
+        List<CartElement> cartElements = new ArrayList<>();
+        for(Sale s : transaction.getSales()){
+            CartElement ce = new CartElement(null, s.getInventory().getModelOfInventory(), s.getQuantity(), false, null, true);
+            ce = inventoryService.setAttributeAndValueByInventory(ce, s.getInventory());
+            cartElements.add(ce);
+        }
+        return cartElements;
     }
 }
