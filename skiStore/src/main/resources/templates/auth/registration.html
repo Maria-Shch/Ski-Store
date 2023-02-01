@@ -19,7 +19,7 @@
 
                 <input class="input-field" type="email"  th:field="*{username}" placeholder="Электронная почта" required>
 
-                <input class="input-field" type="tel"  th:field="*{phoneNumber}" placeholder="+7-(_ _ _)" required>
+                <input class="input-field" type="tel"  th:field="*{phoneNumber}" placeholder="+7..." required>
 
                 <select class="input-field" name="idSelectedCity">
                     <option th:each="city : ${cities}" th:value=${city.id} th:text="${city.name}"></option>

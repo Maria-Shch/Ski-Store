@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Year implements Filterable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "period")
     private String name;

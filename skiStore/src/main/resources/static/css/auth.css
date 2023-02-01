@@ -121,21 +121,6 @@ textarea:focus, input:focus{
     font-size: 20px;
 }
 
-.error{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 290px;
-    height: 40px;
-    border-radius: var(--border-radius);
-    margin: 10px 10px 20px;
-    color: #ffe5e5;
-    background-color: #f55252;
-    font-size: 18px;
-}
-
 .p-error{
     color: #ffffff;
     font-size: 18px;

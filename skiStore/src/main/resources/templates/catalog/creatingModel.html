@@ -1,0 +1,122 @@
+<html lang="ru"
+      xmlns:th="www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>Добавление нового товара</title>
+    <link th:href="@{/css/root.css}" rel="stylesheet">
+    <link th:href="@{/css/creatingModel.css}" rel="stylesheet">
+    <link th:href="@{/css/fragments/header.css}" rel="stylesheet">
+  </head>
+  <body>
+    <div th:replace="~{fragments/header :: fragment-header (${role})}"></div>
+    <div class="d-container">
+      <p th:text="'Вы создаёте новый товар в категории ' + ${modelCreator.modelType.name}" class="p-header"></p>
+      <form class="form-new-model" method="post"
+            th:action="@{/catalog/new/{modelType}(modelType=${modelCreator.modelType.nameEnglish})}"
+            th:object="${modelCreator}" enctype="multipart/form-data" id="creatingModelForm">
+        <div class="d-param">
+          <p class="p-parameter">Название</p>
+          <p th:if="${#fields.hasErrors('title')}"  th:errors="*{title}" class="p-error"></p>
+          <input class="input-field" type="text" th:field="*{title}" placeholder="Название модели" required>
+        </div>
+        <div class="d-param">
+          <p class="p-parameter">Описание</p>
+          <textarea class="input-field" type="text" th:field="*{description}" placeholder="Описание" required></textarea>
+        </div>
+        <input type="hidden" th:field="*{modelType}">
+        <div class="d-param">
+          <p class="p-parameter">Бренд</p>
+          <p class="p-simple">Выберите бренд из списка уже существующих или задайте новый.<br> При создании нового бренда не выбирайте из списка какой-либо бренд.</p>
+          <p th:if="${#fields.hasErrors('brand')}"  th:errors="*{brand}" class="p-error"></p>
+          <input type="hidden" th:field="*{brands}">
+          <div class="d-select-input">
+            <select th:field="${modelCreator.brand}" class="select-param">
+              <option th:value=${null} th:text="'Не выбран'"></option>
+              <option th:each="brand : ${modelCreator.brands}" th:value="${brand.id}" th:text="${brand.name}"></option>
+            </select>
+            <input class="input-field" type="text" th:field="*{newBrand}" placeholder="Название нового бренда">
+          </div>
+        </div>
+        <div class="d-param">
+          <p class="p-parameter">Сезон</p>
+          <input type="hidden" th:field="*{seasons}">
+          <p th:if="${#fields.hasErrors('season')}"  th:errors="*{season}" class="p-error"></p>
+          <select th:field="${modelCreator.season}" class="select-param">
+            <option th:value=${null} th:text="'Не выбран'"></option>
+            <option th:each="season : ${modelCreator.seasons}" th:value="${season.id}" th:text="${season.name}"></option>
+          </select>
+        </div>
+        <div class="d-param">
+          <p class="p-parameter">Год</p>
+          <input type="hidden" th:field="*{years}">
+          <p th:if="${#fields.hasErrors('year')}"  th:errors="*{year}" class="p-error"></p>
+          <div class="d-select-input">
+            <select th:field="${modelCreator.year}" class="select-param">
+              <option th:value=${null} th:text="'Не выбран'"></option>
+              <option th:each="year : ${modelCreator.years}" th:value="${year.id}" th:text="${year.name}"></option>
+            </select>
+          </div>
+        </div>
+        <div class="d-param-row">
+          <p class="p-parameter">Цена:</p>
+          <input class="input-field-price" type="number" th:field="*{price}" placeholder="Цена" min="1" step=".01" required>
+          <p>руб.</p>
+        </div>
+        <div class="d-param-row">
+          <p class="p-parameter">Скидка:</p>
+          <input class="input-field-price" type="number" th:field="*{discount}" placeholder="Скидка" min="1" max="100" step="1" required>
+          <p>%</p>
+        </div>
+        <div class="d-param">
+          <p class="p-parameter">Добавьте фото товара</p>
+          <p class="p-simple">(В формате .png, .jpg, .jpeg)</p>
+          <p th:if="${#fields.hasErrors('image')}"  th:errors="*{image}" class="p-error"></p>
+          <input class="input-image" type="file" th:field="*{image}" name="image" accept="image/*" required>
+        </div>
+        <div class="d-param">
+          <p class="p-parameter">Атрибуты</p>
+          <div th:each="attributeAdapter, iterator : *{adaptersStaticAttributes}">
+
+            <input type="hidden" th:field="*{adaptersStaticAttributes[__${iterator.index}__].attribute}"/>
+            <input type="hidden" th:field="*{adaptersStaticAttributes[__${iterator.index}__].values}"/>
+
+            <div class="d-attribute-row">
+              <p class="p-attribute" th:text="*{adaptersStaticAttributes[__${iterator.index}__].attribute.name}"></p>
+              <p th:if="*{adaptersStaticAttributes[__${iterator.index}__].attribute.unitOfMeasure != null}"
+                 class="p-attribute" th:text="', ' + *{adaptersStaticAttributes[__${iterator.index}__].attribute.unitOfMeasure.name}"></p>
+            </div>
+            <p th:if="${#fields.hasErrors('adaptersStaticAttributes[__${iterator.index}__]')}"  th:errors="*{adaptersStaticAttributes[__${iterator.index}__]}" class="p-error"></p>
+            <div class="d-select-input">
+              <select th:if="*{adaptersStaticAttributes[__${iterator.index}__].attribute.attributeType.name == 'List'}"
+                      th:field="*{adaptersStaticAttributes[__${iterator.index}__].selectedValue}" class="select-param">
+                <option th:value=${null} th:text="'Нет информации'"></option>
+                <option th:each="value, iterator1 : *{adaptersStaticAttributes[__${iterator.index}__].values}"
+                        th:value="*{adaptersStaticAttributes[__${iterator.index}__].values[__${iterator1.index}__].id}"
+                        th:text="*{adaptersStaticAttributes[__${iterator.index}__].values[__${iterator1.index}__].name}"></option>
+              </select>
+              <input th:if="*{adaptersStaticAttributes[__${iterator.index}__].attribute.isAddable == true}"
+                     th:field="*{adaptersStaticAttributes[__${iterator.index}__].newValue}"
+                     class="input-field" type="text" placeholder="Новое значение">
+            </div>
+          </div>
+        </div>
+        <div th:if="*{adapterDynamicAttribute != null}" class="d-param">
+            <p class="p-parameter" th:text="*{adapterDynamicAttribute.attribute.name}"></p>
+            <input type="hidden" th:field="*{adapterDynamicAttribute.attribute}"/>
+          <p th:if="${#fields.hasErrors('adapterDynamicAttribute')}"  th:errors="*{adapterDynamicAttribute}" class="p-error"></p>
+          <div class="d-dynamic-params">
+            <div th:each="entry : *{adapterDynamicAttribute.selectedValues}" class="d-dynamic-parameter">
+              <input type="checkbox" name="adapterDynamicAttribute" th:value="*{adapterDynamicAttribute.selectedValues[__${entry.key.id}__].booleanValue()}"
+                     th:field="*{adapterDynamicAttribute.selectedValues[__${entry.key.id}__]}"/>
+              <label class="p-simple" th:text="${entry.key.name}"></label>
+            </div>
+          </div>
+        </div>
+        <div class="d-button">
+          <button class="b-create" type="submit">Создать</button>
+        </div>
+      </form>
+    </div>
+    <script type="text/javascript" src="../../js/check_select_dynamic_attribute.js"></script>
+  </body>
+</html>

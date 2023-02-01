@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class InventoryAttributeValue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")

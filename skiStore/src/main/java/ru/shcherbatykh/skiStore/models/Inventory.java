@@ -1,5 +1,6 @@
 package ru.shcherbatykh.skiStore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,7 +16,7 @@ import java.util.List;
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
@@ -26,4 +27,10 @@ public class Inventory {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "inventory")
     @ToString.Exclude
     private List<InventoryAttributeValue> valuesOfInventoryAttribute = new ArrayList<>();
+
+    public Inventory(Long id, ModelOfInventory modelOfInventory, int quantity) {
+        this.id = id;
+        this.modelOfInventory = modelOfInventory;
+        this.quantity = quantity;
+    }
 }

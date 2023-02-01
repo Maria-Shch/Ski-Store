@@ -22,6 +22,11 @@ public class InventoryService {
         this.inventoryAttributeValueRepository = inventoryAttributeValueRepository;
     }
 
+    @Transactional
+    public Inventory save(Inventory inventory){
+        return inventoryRepository.save(inventory);
+    }
+
     //todo duplicate code
     public DynamicInventoryAttribute getDynamicInventoryAttributeByModel(ModelOfInventory model){
         List<Inventory> presentInventoriesByModel = getPresentInventoriesByModel(model);

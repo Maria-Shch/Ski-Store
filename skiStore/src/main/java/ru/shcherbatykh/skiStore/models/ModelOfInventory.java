@@ -70,4 +70,18 @@ public class ModelOfInventory {
         priceForPrint = CommonUtils.decorationPrice(price);
         discountPriceForPrint = CommonUtils.decorationPrice(discountPrice);
     }
+
+    public ModelOfInventory(String title, String description, ModelType modelType, Brand brand, Season season, Year year,
+                            AvailabilityStatus availabilityStatus, String imageTitle, Double price, Integer discount) {
+        this.title = title;
+        this.description = description;
+        this.modelType = modelType;
+        this.brand = brand;
+        this.season = season;
+        this.year = year;
+        this.availabilityStatus = availabilityStatus;
+        this.imageTitle = imageTitle;
+        this.price = price;
+        this.discount = discount;
+    }
 }

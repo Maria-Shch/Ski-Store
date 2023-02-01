@@ -1,5 +1,6 @@
 package ru.shcherbatykh.skiStore.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,10 +11,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "model_attribute_values")
 @NoArgsConstructor
+@AllArgsConstructor
 public class ModelAttributeValue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")

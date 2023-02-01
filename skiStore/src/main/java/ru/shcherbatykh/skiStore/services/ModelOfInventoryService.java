@@ -1,14 +1,20 @@
 package ru.shcherbatykh.skiStore.services;
 
+import lombok.SneakyThrows;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+import ru.shcherbatykh.skiStore.classes.ModelCreator;
 import ru.shcherbatykh.skiStore.classes.ReceivedFilter;
 import ru.shcherbatykh.skiStore.models.*;
 import ru.shcherbatykh.skiStore.repositories.ModelOfInventoryRepository;
+import ru.shcherbatykh.skiStore.validator.ModelCreatorValidator;
 
 import javax.persistence.criteria.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +22,25 @@ import java.util.Map;
 @Service
 public class ModelOfInventoryService {
 
-    private final ModelOfInventoryRepository modelOfInventoryRepository;
+    @org.springframework.beans.factory.annotation.Value("${skiStore.resources.images.url}")
+    private String PATH;
 
-    public ModelOfInventoryService(ModelOfInventoryRepository modelOfInventoryRepository) {
+    private final ModelOfInventoryRepository modelOfInventoryRepository;
+    private final ModelCreatorValidator modelCreatorValidator;
+    private final BrandService brandService;
+    private final AvailabilityStatusService availabilityStatusService;
+    private final AttributeService attributeService;
+    private final InventoryService inventoryService;
+
+    public ModelOfInventoryService(ModelOfInventoryRepository modelOfInventoryRepository,
+                                   ModelCreatorValidator modelCreatorValidator, BrandService brandService,
+                                   AvailabilityStatusService availabilityStatusService, AttributeService attributeService, InventoryService inventoryService) {
         this.modelOfInventoryRepository = modelOfInventoryRepository;
+        this.modelCreatorValidator = modelCreatorValidator;
+        this.brandService = brandService;
+        this.availabilityStatusService = availabilityStatusService;
+        this.attributeService = attributeService;
+        this.inventoryService = inventoryService;
     }
 
     @Transactional
@@ -30,6 +51,15 @@ public class ModelOfInventoryService {
     @Transactional
     public ModelOfInventory getModel(long idModel) {
         return modelOfInventoryRepository.getModelById(idModel);
+    }
+
+    @Transactional
+    public ModelOfInventory findByTitle(String title) {
+        return modelOfInventoryRepository.findModelOfInventoryByTitle(title);
+    }
+
+    public ModelOfInventory save(ModelOfInventory newModel){
+        return modelOfInventoryRepository.save(newModel);
     }
 
     @Transactional
@@ -45,7 +75,7 @@ public class ModelOfInventoryService {
             modelOfInventory.setPrice(newPriceDouble);
             modelOfInventoryRepository.save(modelOfInventory);
             return true;
-        }catch (ClassCastException e){
+        } catch (ClassCastException e){
             return false;
         }
     }
@@ -90,7 +120,7 @@ public class ModelOfInventoryService {
                 }
             }
         }
-        return modelOfInventoryRepository.findAll(specification);
+        return modelOfInventoryRepository.findAll(specification).stream().toList();
     }
 
     private Specification<ModelOfInventory> hasModelType(Long modelTypeId) {
@@ -167,5 +197,49 @@ public class ModelOfInventoryService {
         Predicate attributePredicate = criteriaBuilder.equal(attribute, attrId);
         Predicate orValuePredicate = criteriaBuilder.or(valuePredicates.toArray(new Predicate[0]));
         return criteriaBuilder.and(attributePredicate, orValuePredicate);
+    }
+
+    @SneakyThrows
+    public ModelOfInventory createNewModelOfInventory(ModelCreator modelCreator, BindingResult bindingResult){
+
+        modelCreatorValidator.validate(modelCreator, bindingResult);
+        if (bindingResult.hasErrors()) return null;
+
+        StringBuilder path = new StringBuilder(PATH)
+            .append(modelCreator.getModelType().getNameEnglish())
+            .append("\\");
+
+        StringBuilder imageTitle = new StringBuilder(modelCreator.getTitle())
+                .append(".")
+                .append(modelCreator.getImage().getOriginalFilename().split("\\.")[1]);
+
+        java.nio.file.Path fileNameAndPath = Paths.get(path.toString(), imageTitle.toString());
+        Files.write(fileNameAndPath, modelCreator.getImage().getBytes());
+
+        Brand brand=null;
+        if (modelCreator.getBrand() != null) brand = modelCreator.getBrand();
+        else {
+            brand = brandService.save(new Brand(null, modelCreator.getNewBrand()));
+        }
+
+        ModelOfInventory newModel = new ModelOfInventory(modelCreator.getTitle(),
+                modelCreator.getDescription(), modelCreator.getModelType(), brand, modelCreator.getSeason(),
+                modelCreator.getYear(), availabilityStatusService.getAvailableStatus(), imageTitle.toString(),
+                modelCreator.getPrice(), modelCreator.getDiscount());
+
+        ModelOfInventory savedModel = save(newModel);
+
+        if(modelCreator.getAdaptersStaticAttributes()!=null) {
+            attributeService.saveStaticAttributesOfNewModel(newModel, modelCreator);
+        }
+
+        if(modelCreator.getAdapterDynamicAttribute() == null){
+            inventoryService.save(new Inventory(null, newModel, 0));
+        }
+        else{
+            attributeService.saveDynamicAttributesOfNewModel(newModel, modelCreator);
+        }
+
+        return savedModel;
     }
 }

@@ -16,8 +16,7 @@ import ru.shcherbatykh.skiStore.services.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @RequestMapping("/catalog")
@@ -29,16 +28,25 @@ public class CatalogController {
     private final FiltrationService filtrationService;
     private final InventoryService inventoryService;
     private final CartService cartService;
+    private final BrandService brandService;
+    private final SeasonService seasonService;
+    private final YearService yearService;
+    private final AttributeService attributeService;
 
     public CatalogController(ModelOfInventoryService modelOfInventoryService, ModelTypeService modelTypeService,
                              UserService userService, FiltrationService filtrationService,
-                             InventoryService inventoryService, CartService cartService) {
+                             InventoryService inventoryService, CartService cartService, BrandService brandService,
+                             SeasonService seasonService, YearService yearService, AttributeService attributeService) {
         this.modelOfInventoryService = modelOfInventoryService;
         this.modelTypeService = modelTypeService;
         this.userService = userService;
         this.filtrationService = filtrationService;
         this.inventoryService = inventoryService;
         this.cartService = cartService;
+        this.brandService = brandService;
+        this.seasonService = seasonService;
+        this.yearService = yearService;
+        this.attributeService = attributeService;
     }
 
     @GetMapping
@@ -108,7 +116,7 @@ public class CatalogController {
         ModelOfInventoryResponse modelOfInventoryResponse = ModelOfInventoryResponse.builder()
                 .modelOfInventory(modelOfInventory)
                 .isPresentInStock(inventoryService.checkIsPresentInventoryInStockByModel(modelOfInventory))
-                .isPresentDynamicInventoryAttribute(DIA != null)
+                .isPresentDynamicInventoryAttribute(attributeService.isPresentDynamicInventoryAttribute(modelOfInventory.getModelType()))
                 .dynamicInventoryAttribute(DIA)
                 .newPrice(String.valueOf(modelOfInventory.getPrice()))  // The old values of a price and a discount are passed through
                 .newDiscount(modelOfInventory.getDiscount())            // the ModelOfInventoryResponse for displaying current values in the inputs
@@ -118,7 +126,7 @@ public class CatalogController {
         model.addAttribute("modelOfInventoryResponse", modelOfInventoryResponse);
 
         if(userService.getRoleByUserDetails(userDetails).equals(Role.ADMIN)){
-            if(DIA != null){
+            if(attributeService.isPresentDynamicInventoryAttribute(modelOfInventory.getModelType())){
                 AdminDynamicInventoryAttribute adminDIA = inventoryService.getAdminDynamicInventoryAttributeByModel(modelOfInventory);
                 model.addAttribute("adminDynamicInventoryAttribute", adminDIA);
             }
@@ -152,5 +160,48 @@ public class CatalogController {
 
         fillingModelForModelPage(model, userDetails, modelId);
         return String.format("redirect:/catalog/%s/%d", modelOfInventory.getModelType().getNameEnglish(), modelId);
+    }
+
+    @GetMapping("/new/{modelTypeEn}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String addNewModel (Model model, @AuthenticationPrincipal UserDetails userDetails,
+                                @PathVariable String modelTypeEn) {
+        fillingModelForCreatingNewModelPage(model, userDetails, modelTypeEn);
+        return "catalog/creatingModel";
+    }
+
+    @PostMapping("/new/{modelTypeEn}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String addNewModel(Model model, @AuthenticationPrincipal UserDetails userDetails,
+                              @ModelAttribute("modelCreator") ModelCreator modelCreator,
+                              BindingResult bindingResult) {
+        ModelOfInventory newModel = modelOfInventoryService.createNewModelOfInventory(modelCreator, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            if(modelCreator.getAdapterDynamicAttribute()!=null){
+                modelCreator.refreshAdapterDynamicAttribute();
+            }
+            model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+            model.addAttribute("modelCreator", modelCreator);
+            return "catalog/creatingModel";
+        }
+
+        return String.format("redirect:/catalog/%s/%d", modelCreator.getModelType().getNameEnglish(), newModel.getId());
+    }
+
+
+    private void fillingModelForCreatingNewModelPage(Model model, UserDetails userDetails, String modelTypeNameEn) {
+        ModelType modelType = modelTypeService.getModelTypeByNameEn(modelTypeNameEn);
+
+        ModelCreator modelCreator = ModelCreator.builder()
+                .modelType(modelType)
+                .brands(brandService.findAll())
+                .seasons(seasonService.findAll())
+                .years(yearService.findAll())
+                .adaptersStaticAttributes(attributeService.getAdaptersStaticAttributeByModelType(modelType))
+                .adapterDynamicAttribute(attributeService.getAdapterDynamicAttributeByModelType(modelType))
+                .build();
+        model.addAttribute("role", userService.getRoleByUserDetails(userDetails));
+        model.addAttribute("modelCreator", modelCreator);
     }
 }

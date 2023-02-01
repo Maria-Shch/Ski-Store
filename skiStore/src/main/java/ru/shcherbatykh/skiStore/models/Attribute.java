@@ -30,6 +30,9 @@ public class Attribute {
     @Column(name = "is_dynamic")
     private boolean isDynamic;
 
+    @Column(name = "is_addable")
+    private boolean isAddable;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "attribute")
     @ToString.Exclude
     private List<Value> values = new ArrayList<>();

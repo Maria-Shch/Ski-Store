@@ -8,6 +8,7 @@ import ru.shcherbatykh.skiStore.models.ModelAttributeValue;
 import ru.shcherbatykh.skiStore.models.Value;
 import ru.shcherbatykh.skiStore.repositories.InventoryAttributeValueRepository;
 import ru.shcherbatykh.skiStore.repositories.ModelAttributeValueRepository;
+import ru.shcherbatykh.skiStore.repositories.ValueRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,10 +17,12 @@ import java.util.List;
 public class ValueService {
     private final InventoryAttributeValueRepository inventoryAttributeValueRepository;
     private final ModelAttributeValueRepository modelAttributeValueRepository;
+    private final ValueRepository valueRepository;
 
-    public ValueService( InventoryAttributeValueRepository inventoryAttributeValueRepository, ModelAttributeValueRepository modelAttributeValueRepository) {
+    public ValueService(InventoryAttributeValueRepository inventoryAttributeValueRepository, ModelAttributeValueRepository modelAttributeValueRepository, ValueRepository valueRepository) {
         this.inventoryAttributeValueRepository = inventoryAttributeValueRepository;
         this.modelAttributeValueRepository = modelAttributeValueRepository;
+        this.valueRepository = valueRepository;
     }
 
     @Transactional
@@ -38,5 +41,14 @@ public class ValueService {
                     .sorted(Comparator.comparing(Value::getName))
                     .toList();
         }
+    }
+
+    public Value findValueByNameAndAttribute(String name, Attribute attribute){
+        return valueRepository.findByNameAndAttribute(name, attribute);
+    }
+
+    @Transactional
+    public Value save(Value value){
+        return valueRepository.save(value);
     }
 }

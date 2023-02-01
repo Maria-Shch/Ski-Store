@@ -1,6 +1,6 @@
 package ru.shcherbatykh.skiStore.classes;
 
 public interface Filterable {
-    long getId();
+    Long getId();
     String getName();
 }

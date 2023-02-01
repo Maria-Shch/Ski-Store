@@ -16,7 +16,7 @@ import java.util.Objects;
 public class Value implements Filterable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "value")
     private String name;

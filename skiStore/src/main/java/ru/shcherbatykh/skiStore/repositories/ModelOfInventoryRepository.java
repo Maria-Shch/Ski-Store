@@ -7,6 +7,7 @@ import ru.shcherbatykh.skiStore.models.ModelOfInventory;
 import ru.shcherbatykh.skiStore.models.ModelType;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface ModelOfInventoryRepository extends CrudRepository<ModelOfInventory, Long> {
@@ -15,7 +16,9 @@ public interface ModelOfInventoryRepository extends CrudRepository<ModelOfInvent
 
     ModelOfInventory getModelById(long id);
 
+    ModelOfInventory findModelOfInventoryByTitle(String title);
+
     List<ModelOfInventory> findAllByModelType(ModelType modelType);
 
-    List<ModelOfInventory> findAll(Specification<ModelOfInventory> specification);
+    Set<ModelOfInventory> findAll(Specification<ModelOfInventory> specification);
 }

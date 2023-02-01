@@ -47,6 +47,7 @@ public class UserService {
     @Transactional
     public void addUser(User newUser) {
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+        //todo it's not thread safe when two users with the same username sign up at the same time
         userRepository.save(newUser);
     }
 

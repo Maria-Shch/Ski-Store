@@ -45,6 +45,6 @@ public class SkiStoreApplication {
 
 }
 
-//todo sort model types before sending to front
-//todo at least one inventory checked for go to payment
-//todo able to change username (email)
+//todo ControllerAdvice MaxUploadSizeExceededException
+//todo если отключить скрипт js то возможен переход к покупке товара без выбора хотя бы одного элемента??
+//todo отображение блока с ценой, если скидка 0

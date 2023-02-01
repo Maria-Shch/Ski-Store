@@ -12,17 +12,17 @@ import java.util.Map;
 @Service
 public class FiltrationService {
 
-    private final SpecificationsService specificationsService;
+    private final SpecificationsOfFilterService specificationsOfFilterService;
     private final BrandService brandService;
     private final YearService yearService;
     private final ValueService valueService;
     private final AttributeService attributeService;
     private final ModelOfInventoryService modelOfInventoryService;
 
-    public FiltrationService(SpecificationsService specificationsService, BrandService brandService,
+    public FiltrationService(SpecificationsOfFilterService specificationsOfFilterService, BrandService brandService,
                              YearService yearService, ValueService valueService, AttributeService attributeService,
                              ModelOfInventoryService modelOfInventoryService) {
-        this.specificationsService = specificationsService;
+        this.specificationsOfFilterService = specificationsOfFilterService;
         this.brandService = brandService;
         this.yearService = yearService;
         this.valueService = valueService;
@@ -33,9 +33,9 @@ public class FiltrationService {
     public List<FiltrationCategory> getFiltrationParams(ModelType modelType) {
 
         List<FiltrationCategory> filtrationCategories = new ArrayList<>();
-        List<Specifications> specificationsByModelType = specificationsService.getSpecificationsByModelType(modelType);
-        List<Attribute> attributes = specificationsByModelType.stream()
-                .map(Specifications::getAttribute)
+        List<SpecificationsOfFilter> specificationsOfFilterByModelType = specificationsOfFilterService.getSpecificationsByModelType(modelType);
+        List<Attribute> attributes = specificationsOfFilterByModelType.stream()
+                .map(SpecificationsOfFilter::getAttribute)
                 .toList();
 
         for (Attribute attribute : attributes) {
@@ -46,7 +46,7 @@ public class FiltrationService {
             filtrationCategories.add(fc);
         }
 
-        List<Brand> brands = brandService.getBrandsByModelType(modelType);
+        List<Brand> brands = brandService.getBrandsByModelType(modelOfInventoryService.getModelsByModelType(modelType));
         List<Year> years = yearService.getYearsByModelType(modelType);
 
         filtrationCategories.add(new FiltrationCategory("Бренд", serializationFilterableToFiltrationParameter(brands)));
